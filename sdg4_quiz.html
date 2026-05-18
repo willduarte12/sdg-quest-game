@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 4 — Quality Education | General Knowledge Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg-color: #C5192D;
+    --sdg-light: #fdecea;
+    --sdg-mid: #f5a3ad;
+    --sdg-dark: #8B1520;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --red-50: #FCEBEB; --red-100: #F7C1C1; --red-600: #A32D2D;
+    --bg: #ffffff; --bg-secondary: #f7f7f5;
+    --text: #1a1a18; --text-secondary: #5f5e5a; --text-tertiary: #888780;
+    --border: rgba(0,0,0,0.10); --border-hover: rgba(0,0,0,0.22);
+    --radius-md: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #4a0c12; --sdg-mid: #8B1520; --sdg-dark: #f5a3ad;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --red-50: #501313; --red-100: #791F1F; --red-600: #F09595;
+      --bg: #1c1c1a; --bg-secondary: #262624;
+      --text: #f0efe8; --text-secondary: #b4b2a9; --text-tertiary: #888780;
+      --border: rgba(255,255,255,0.10); --border-hover: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; align-items: flex-start; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding: 0 0 2rem; }
+  .hero { background: var(--sdg-color); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius-md); flex-shrink: 0; background: white; }
+  .hero-text { flex: 1; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #ffffff; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .score-bar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); overflow: hidden; }
+  .score-item { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); }
+  .score-item:last-child { border-right: none; }
+  .score-item span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .card { background: var(--bg); border: 0.5px solid var(--border-hover); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; min-height: 220px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--sdg-light); color: var(--sdg-color); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--sdg-mid); }
+  .subject { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; background: var(--bg-secondary); color: var(--text-tertiary); border: 0.5px solid var(--border-hover); margin-left: 6px; }
+  .question { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.25rem; }
+  .opts { display: grid; gap: 8px; }
+  .opt { border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); padding: 11px 14px; font-size: 14px; cursor: pointer; background: var(--bg); color: var(--text); text-align: left; transition: background .12s, border-color .12s; width: 100%; font-family: inherit; line-height: 1.5; }
+  .opt:hover:not(:disabled) { background: var(--bg-secondary); border-color: var(--sdg-color); }
+  .opt.correct { background: var(--green-50); border-color: var(--green-100); color: var(--green-800); }
+  .opt.wrong { background: var(--red-50); border-color: var(--red-100); color: var(--red-600); }
+  .opt:disabled { cursor: default; }
+  .feedback { margin-top: 1rem; padding: 12px 14px; border-radius: var(--radius-md); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .feedback.wrong { background: var(--red-50); color: var(--red-600); border: 0.5px solid var(--red-100); }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-hover); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg-color); border-color: var(--sdg-color); color: #ffffff; }
+  .btn-primary:hover { background: #a01525; border-color: #a01525; }
+  .hint { font-size: 12px; color: var(--text-tertiary); }
+  .counter { font-size: 12px; color: var(--text-tertiary); text-align: right; padding: 0 0 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxQ8k5TUpvopo1WJF9L64xxWOQlSQMIuMOKg&s" alt="SDG 4 icon" onerror="this.style.display='none'">
+    <div class="hero-text">
+      <div class="hero-eyebrow">People · Goal 4 of 17</div>
+      <div class="hero-title">Quality Education</div>
+      <div class="hero-sub">General knowledge quiz — biology, geography, history, science & more</div>
+    </div>
+  </div>
+  <div class="inner">
+    <div class="score-bar">
+      <div class="score-item"><span id="correct">0</span>Correct</div>
+      <div class="score-item"><span id="wrong">0</span>Wrong</div>
+      <div class="score-item"><span id="total">0</span>Questions</div>
+    </div>
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>25 general knowledge questions across different school subjects.<br>Think carefully — all options look plausible!</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start quiz
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        New question
+      </button>
+      <span class="hint">Questions shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  { subject: "Biology", q: "How many liters of blood does the average adult human body contain?", opts: ["A) 1–2 liters", "B) 4–6 liters", "C) 8–10 liters", "D) 10–12 liters"], correct: 1, explanation: "The average adult has between 4 and 6 liters of blood. The exact amount depends on body weight — roughly 7–8% of total body weight." },
+  { subject: "Biology", q: "Which blood type is considered the universal donor?", opts: ["A) Type A", "B) Type AB", "C) Type O", "D) Type B"], correct: 2, explanation: "Type O blood can be donated to people of any blood type because it has no A or B antigens. However, Type O can only receive blood from other Type O donors." },
+  { subject: "Biology", q: "Which chromosomes determine male sex in humans?", opts: ["A) XX", "B) XY", "C) YY", "D) XO"], correct: 1, explanation: "Males have one X and one Y chromosome (XY). Females have two X chromosomes (XX). The Y chromosome carries genes that trigger male development." },
+  { subject: "Biology", q: "Which organs belong to the respiratory system?", opts: ["A) Esophagus and stomach", "B) Larynx and trachea", "C) Liver and pancreas", "D) Thyroid and kidneys"], correct: 1, explanation: "The larynx (voice box) and trachea (windpipe) are key parts of the respiratory system. They connect the nose and mouth to the lungs, conducting air through the body." },
+  { subject: "Biology", q: "Which substance do plants absorb from the air during photosynthesis?", opts: ["A) Oxygen", "B) Nitrogen", "C) Carbon dioxide", "D) Hydrogen"], correct: 2, explanation: "Plants absorb carbon dioxide (CO₂) and use sunlight and water to convert it into glucose and oxygen. This process — photosynthesis — is the foundation of almost all life on Earth." },
+  { subject: "Chemistry", q: "Diamond and graphite are both made of pure carbon. What makes them so different?", opts: ["A) Diamond has more carbon atoms per gram", "B) Graphite contains impurities that make it softer", "C) The difference is entirely in how the carbon atoms are arranged", "D) Diamond forms at higher temperatures, which changes its chemical formula"], correct: 2, explanation: "In diamond, carbon atoms form a rigid 3D tetrahedral structure — one of the hardest known materials. In graphite, atoms form flat layers that slide easily over each other, making it soft enough to write with." },
+  { subject: "Chemistry", q: "The periodic table currently has how many elements?", opts: ["A) 92", "B) 108", "C) 113", "D) 118"], correct: 3, explanation: "The periodic table has 118 confirmed elements. The most recently added — Nihonium, Moscovium, Tennessine, and Oganesson — were officially named in 2016." },
+  { subject: "Chemistry", q: "What is the chemical symbol for gold?", opts: ["A) Go", "B) Gd", "C) Au", "D) Ag"], correct: 2, explanation: "Gold's symbol is Au, from the Latin word 'aurum.' Silver is Ag (argentum) and copper is Cu (cuprum) — all Latin names that predate modern chemistry." },
+  { subject: "Physics", q: "How long does light from the Sun take to reach Earth?", opts: ["A) 12 seconds", "B) 8 minutes", "C) 45 minutes", "D) 12 hours"], correct: 1, explanation: "Light travels at 300,000 km/s. The Sun is about 150 million km away, so sunlight takes approximately 8 minutes and 20 seconds to reach Earth." },
+  { subject: "Physics", q: "You are in a lift that suddenly goes into free fall. If you drop your keys inside the lift, what happens?", opts: ["A) They fall to the floor faster than normal", "B) They float in front of you", "C) They fall to the floor at the same speed as always", "D) They fly upward toward the ceiling"], correct: 1, explanation: "In free fall, you and the keys accelerate at exactly the same rate due to gravity. There is no relative motion between you, so the keys appear to float — the same principle behind weightlessness in space." },
+  { subject: "Geography", q: "What is the smallest country in the world?", opts: ["A) Monaco", "B) San Marino", "C) Vatican City", "D) Nauru"], correct: 2, explanation: "Vatican City covers just 0.44 km² inside Rome, Italy. It is the headquarters of the Catholic Church and has a population of about 800 people." },
+  { subject: "Geography", q: "What is the highest mountain in Brazil?", opts: ["A) Pico da Bandeira", "B) Monte Roraima", "C) Pico da Neblina", "D) Pico Paraná"], correct: 2, explanation: "Pico da Neblina, in the state of Amazonas near the Venezuelan border, stands at 2,994 meters — the highest point in Brazil." },
+  { subject: "Geography", q: "Which country is the largest archipelago in the world?", opts: ["A) Philippines", "B) Japan", "C) Indonesia", "D) The Bahamas"], correct: 2, explanation: "Indonesia consists of over 17,000 islands, making it the world's largest archipelago. It spans more than 5,000 km and is home to over 270 million people." },
+  { subject: "Geography", q: "Brazil is one of the world's largest food exporters. Yet millions of Brazilians face food insecurity. What best explains this contradiction?", opts: ["A) Most Brazilian food is of poor nutritional quality", "B) Exporting food is an economic activity — it does not guarantee local access to affordable food", "C) Brazil exports only luxury foods that poor people do not need", "D) The government bans the sale of exported products inside Brazil"], correct: 1, explanation: "Food export is driven by global market prices and trade deals. Local hunger is driven by income inequality, food prices, and distribution systems — not by how much food a country produces." },
+  { subject: "History", q: "Which country invented the electric shower?", opts: ["A) United States", "B) Germany", "C) Japan", "D) Brazil"], correct: 3, explanation: "The practical electric shower was developed in Brazil by Francisco Canhos in the 1940s, in the city of Jaú, São Paulo. It became one of Brazil's most iconic domestic inventions." },
+  { subject: "History", q: "Who was the first man to walk on the Moon, and in what year?", opts: ["A) Buzz Aldrin, 1969", "B) Yuri Gagarin, 1961", "C) Neil Armstrong, 1969", "D) Michael Collins, 1969"], correct: 2, explanation: "Neil Armstrong stepped onto the Moon on July 20, 1969, during the Apollo 11 mission. His famous words: 'One small step for man, one giant leap for mankind.'" },
+  { subject: "History", q: "The Berlin Wall fell in 1989 without a single shot being fired. What unexpectedly triggered it?", opts: ["A) A military coup in East Germany", "B) A spokesman accidentally announced the border was open immediately at a press conference", "C) The US Army crossed the border in protest", "D) East German citizens voted in a referendum to open the wall"], correct: 1, explanation: "East German spokesman Günter Schabowski misread his notes at a live press conference and announced the border was open 'immediately, without delay.' Crowds gathered and the guards, overwhelmed, let people through." },
+  { subject: "History", q: "In which century did the bubonic plague devastate Europe?", opts: ["A) 12th century", "B) 13th century", "C) 14th century", "D) 15th century"], correct: 2, explanation: "The Black Death peaked between 1347 and 1353, killing approximately one third of Europe's population — around 25 million people. It was caused by the bacterium Yersinia pestis." },
+  { subject: "Art & Culture", q: "Who painted the ceiling of the Sistine Chapel?", opts: ["A) Leonardo da Vinci", "B) Raphael", "C) Donatello", "D) Michelangelo"], correct: 3, explanation: "Michelangelo painted the Sistine Chapel ceiling between 1508 and 1512, commissioned by Pope Julius II. It includes the iconic 'Creation of Adam' scene." },
+  { subject: "Art & Culture", q: "Who are the three main heteronyms created by Portuguese poet Fernando Pessoa?", opts: ["A) Alberto Caeiro, Ricardo Reis and Álvaro de Campos", "B) Ariano Suassuna, Ricardo Reis and Haroldo de Campos", "C) Bento Teixeira, Alberto Caeiro and Augusto de Campos", "D) Alberto Caeiro, Ricardo Leite and Álvaro de Campos"], correct: 0, explanation: "Fernando Pessoa created over 70 heteronyms — fictional authors with distinct biographies, philosophies, and writing styles. The three most famous are Alberto Caeiro, Ricardo Reis, and Álvaro de Campos." },
+  { subject: "Art & Culture", q: "Tarsila do Amaral painted Abaporu, Operários, and Antropofagia. Which artistic movement was she part of?", opts: ["A) Baroque", "B) Brazilian Modernism", "C) Romanticism", "D) Surrealism"], correct: 1, explanation: "Tarsila do Amaral (1886–1973) was one of the leading figures of Brazilian Modernism. Abaporu (1928) inspired the Antropofagia movement, a cultural manifesto that proposed 'devouring' foreign influences to create something uniquely Brazilian." },
+  { subject: "Literature", q: "Which is the second best-selling book in history, after the Bible?", opts: ["A) The Lord of the Rings", "B) The Little Prince", "C) Don Quixote", "D) Harry Potter and the Philosopher's Stone"], correct: 2, explanation: "Don Quixote by Miguel de Cervantes, published in two parts in 1605 and 1615, is widely considered the second most-sold book ever and the first modern novel." },
+  { subject: "Mathematics", q: "A bat and a ball cost $1.10 together. The bat costs $1.00 more than the ball. How much does the ball cost?", opts: ["A) $0.10", "B) $0.15", "C) $0.05", "D) $0.20"], correct: 2, explanation: "Most people instinctively answer $0.10 — but that's wrong. If the ball costs $0.10, the bat costs $1.10, and together they cost $1.20. The correct answer is $0.05 (bat = $1.05, ball = $0.05, total = $1.10)." },
+  { subject: "Mathematics", q: "Two angles are complementary. What is their combined total?", opts: ["A) 45°", "B) 60°", "C) 90°", "D) 180°"], correct: 2, explanation: "Complementary angles add up to 90°. Supplementary angles add up to 180°. A common confusion — but the word 'complementary' comes from 'complete,' as in completing a right angle." },
+  { subject: "Science & Innovation", q: "Wolves were reintroduced to Yellowstone National Park in 1995. Surprisingly, this changed the course of rivers. How?", opts: ["A) Wolves dug channels near their dens that redirected water flow", "B) Wolves reduced the deer population, allowing vegetation to regrow on riverbanks, stabilizing soil and altering river paths", "C) The government also redirected rivers as part of the same conservation project", "D) Wolves avoid rivers, pushing other animals away from the banks and changing erosion patterns"], correct: 1, explanation: "This is called a trophic cascade. Fewer deer meant riverbank vegetation recovered, roots stabilized the soil, rivers narrowed and meandered less — the entire ecosystem transformed because of one predator." }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions);
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " questions remaining in this round";
+
+  var optsHtml = current.opts.map(function(o, i) {
+    return '<button class="opt" onclick="checkAnswer(' + i + ')">' + o + '</button>';
+  }).join("");
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-help-circle" aria-hidden="true"></i>Multiple choice</span>' +
+    '<span class="subject">' + current.subject + '</span>' +
+    '<div class="question" style="margin-top:10px">' + current.q + '</div>' +
+    '<div class="opts" id="opts">' + optsHtml + '</div>' +
+    '<div class="feedback" id="feedback"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(i) {
+  if (answered || !current) return;
+  answered = true;
+  var btns = document.querySelectorAll(".opt");
+  btns.forEach(function(b, idx) {
+    b.disabled = true;
+    if (idx === current.correct) b.classList.add("correct");
+    else if (idx === i && i !== current.correct) b.classList.add("wrong");
+  });
+  var fb = document.getElementById("feedback");
+  if (i === current.correct) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+}
+</script>
+</body>
+</html>
