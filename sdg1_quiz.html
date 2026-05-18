@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 1 — No Poverty | Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red-sdg: #E5243B; --red-light: #fdecea; --red-mid: #f5a3ad; --red-dark: #8B1520;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --bg: #ffffff; --bg-secondary: #f7f7f5;
+    --text: #1a1a18; --text-secondary: #5f5e5a; --text-tertiary: #888780;
+    --border: rgba(0,0,0,0.10); --border-hover: rgba(0,0,0,0.22);
+    --radius-md: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --red-light: #4a0c12; --red-mid: #8B1520; --red-dark: #f5a3ad;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --bg: #1c1c1a; --bg-secondary: #262624;
+      --text: #f0efe8; --text-secondary: #b4b2a9; --text-tertiary: #888780;
+      --border: rgba(255,255,255,0.10); --border-hover: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; align-items: flex-start; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding: 0 0 2rem; }
+  .hero { background: var(--red-sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius-md); flex-shrink: 0; background: white; }
+  .hero-text { flex: 1; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #ffffff; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .score-bar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); overflow: hidden; }
+  .score-item { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); }
+  .score-item:last-child { border-right: none; }
+  .score-item span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .card { background: var(--bg); border: 0.5px solid var(--border-hover); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; min-height: 220px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--red-light); color: var(--red-sdg); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--red-mid); }
+  .question { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.25rem; }
+  .opts { display: grid; gap: 8px; }
+  .opt { border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); padding: 11px 14px; font-size: 14px; cursor: pointer; background: var(--bg); color: var(--text); text-align: left; transition: background .12s, border-color .12s; width: 100%; font-family: inherit; line-height: 1.5; }
+  .opt:hover:not(:disabled) { background: var(--bg-secondary); border-color: var(--red-sdg); }
+  .opt.correct { background: var(--green-50); border-color: var(--green-100); color: var(--green-800); }
+  .opt.wrong { background: var(--red-light); border-color: var(--red-mid); color: var(--red-dark); }
+  .opt:disabled { cursor: default; }
+  .feedback { margin-top: 1rem; padding: 12px 14px; border-radius: var(--radius-md); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .feedback.wrong { background: var(--red-light); color: var(--red-dark); border: 0.5px solid var(--red-mid); }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-hover); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--red-sdg); border-color: var(--red-sdg); color: #ffffff; }
+  .btn-primary:hover { background: #c01e30; border-color: #c01e30; }
+  .hint { font-size: 12px; color: var(--text-tertiary); }
+  .counter { font-size: 12px; color: var(--text-tertiary); text-align: right; padding: 0 0 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://sdgafrica.org/images/SDG17/E_INVERTED_SDG_goals_icons-individual-RGB-01.png" alt="SDG 1 icon" onerror="this.style.display='none'">
+    <div class="hero-text">
+      <div class="hero-eyebrow">People · Goal 1 of 17</div>
+      <div class="hero-title">No Poverty</div>
+      <div class="hero-sub">End poverty in all its forms everywhere by 2030</div>
+    </div>
+  </div>
+  <div class="inner">
+    <div class="score-bar">
+      <div class="score-item"><span id="correct">0</span>Correct</div>
+      <div class="score-item"><span id="wrong">0</span>Wrong</div>
+      <div class="score-item"><span id="total">0</span>Questions</div>
+    </div>
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>25 questions about SDG 1 — No Poverty.<br>All options will look possible. Read carefully!</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start quiz
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        New question
+      </button>
+      <span class="hint">Questions shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    q: "Maria lives in a rural area and earns $1.80 a day. Her children cannot go to school because they need to work. This situation is an example of…",
+    opts: ["A) A temporary financial crisis", "B) A poverty trap — where poverty makes it harder to escape poverty", "C) A government policy failure only", "D) A cultural choice her family made"],
+    correct: 1,
+    explanation: "This is a classic poverty trap: because Maria cannot afford education for her children, they cannot get better jobs — and the cycle continues into the next generation."
+  },
+  {
+    q: "A country grows its economy by 5% every year, but most of the new wealth goes to the richest 10% of people. According to SDG 1, this is a problem because…",
+    opts: ["A) Economic growth should always be slow", "B) The richest people pay more taxes", "C) Growth that does not reduce poverty or inequality is not enough to achieve SDG 1", "D) Only countries with no growth have poverty"],
+    correct: 2,
+    explanation: "SDG 1 recognizes that economic growth alone is not enough. If wealth is concentrated at the top, millions of people remain in poverty even in a 'growing' economy."
+  },
+  {
+    q: "Two villages have the same income level. Village A has a community health clinic and a school. Village B has neither. Which village is MORE likely to escape poverty over time, and why?",
+    opts: ["A) Village B, because fewer institutions means lower taxes", "B) Village A, because access to health and education breaks the cycle of poverty", "C) Both are equal — income level is the only factor that matters", "D) Village B, because people there work harder out of necessity"],
+    correct: 1,
+    explanation: "Access to healthcare and education allows people to stay healthy, develop skills, and find better opportunities — all essential for escaping poverty over generations."
+  },
+  {
+    q: "SDG 1 calls for 'social protection systems for all.' Which of the following would NOT be considered a social protection measure?",
+    opts: ["A) Unemployment benefits for people who lose their jobs", "B) A cash transfer program for families below the poverty line", "C) A luxury tax on expensive goods", "D) Free school meals for children from low-income families"],
+    correct: 2,
+    explanation: "A luxury tax collects money from the wealthy but does not directly protect poor people from falling deeper into poverty. Social protection is about direct support for vulnerable people."
+  },
+  {
+    q: "In 2020, the COVID-19 pandemic pushed an estimated 120 million more people into extreme poverty. This shows that…",
+    opts: ["A) Poverty only exists during health crises", "B) SDG 1 is impossible to achieve", "C) Vulnerable people are disproportionately affected by global shocks, which is why resilience matters", "D) Governments caused poverty by responding to the pandemic"],
+    correct: 2,
+    explanation: "The pandemic showed how quickly progress on poverty can be reversed by a global crisis. SDG 1 specifically calls for building resilience so that shocks do not push millions back into poverty."
+  },
+  {
+    q: "A girl in a low-income family drops out of school at age 12 to help her mother at home. Twenty years later, she earns less than her male classmates who continued studying. Which SDG 1 concept does this best illustrate?",
+    opts: ["A) Multidimensional poverty — lack of income AND lost education opportunity AND gender inequality reinforce each other", "B) Extreme poverty — she earns less than $2.15 a day", "C) Social protection — the government failed to support her", "D) Income inequality — men always earn more than women"],
+    correct: 0,
+    explanation: "This situation involves overlapping disadvantages: poverty forced her to leave school, which limited her career, and gender inequality worsened her outcomes. This is multidimensional poverty."
+  },
+  {
+    q: "Which of the following statements about extreme poverty is TRUE?",
+    opts: ["A) Extreme poverty has increased every year since 2000", "B) Most people in extreme poverty live in urban areas of wealthy countries", "C) Progress on extreme poverty was slowing even before COVID-19, making the 2030 target harder to reach", "D) Extreme poverty only affects people without formal education"],
+    correct: 2,
+    explanation: "Before COVID-19, the rate of poverty reduction was already slowing down. The pandemic made things worse. Experts warn that SDG 1 is one of the goals furthest from being achieved by 2030."
+  },
+  {
+    q: "A microfinance program gives small loans to women in rural communities to start businesses. Five years later, some families improved their income, but others fell deeper into debt. This suggests that…",
+    opts: ["A) Microfinance always fails and should be abolished", "B) Poverty solutions need to be combined with financial education and support, not just access to credit", "C) Women are not capable of managing business loans", "D) Rural communities do not benefit from economic programs"],
+    correct: 1,
+    explanation: "Microfinance can help, but without financial literacy and business support, some borrowers take on more debt than they can repay. Effective poverty solutions are multi-layered."
+  },
+  {
+    q: "A country has very few people in 'extreme poverty' (under $2.15/day), but millions struggle to afford housing, healthcare, and education. According to SDG 1, this country…",
+    opts: ["A) Has fully achieved SDG 1 since extreme poverty is nearly eliminated", "B) Still has significant work to do — SDG 1 targets poverty in all its dimensions, not just income", "C) Should focus only on other SDGs now", "D) Is considered a high-income country with no poverty issues"],
+    correct: 1,
+    explanation: "SDG 1 aims to end poverty 'in all its forms.' Struggling to afford housing, healthcare, or education is still a form of poverty — even if people earn above the extreme poverty line."
+  },
+  {
+    q: "Which factor MOST helps explain why poverty rates are higher in rural areas than in cities?",
+    opts: ["A) Rural people prefer simple lives and choose not to work in cities", "B) Rural areas typically have less access to markets, jobs, quality schools, and healthcare", "C) City governments are more corrupt than rural governments", "D) Agriculture is always more profitable than urban industries"],
+    correct: 1,
+    explanation: "Geographic isolation means rural communities often have fewer economic opportunities and weaker public services, making it harder for people there to escape poverty."
+  },
+  {
+    q: "SDG 1 includes a target about reducing exposure of the poor to climate-related disasters. Why is climate change specifically mentioned in a goal about poverty?",
+    opts: ["A) Because climate change only affects poor countries", "B) Because the UN wanted to combine all global problems into one goal", "C) Because poor people have fewer resources to prepare for and recover from floods, droughts, and storms", "D) Because climate change is caused by poverty"],
+    correct: 2,
+    explanation: "People in poverty often live in informal housing in high-risk areas, have no savings or insurance, and receive less government support after disasters — making climate change a poverty issue too."
+  },
+  {
+    q: "A government decides to reduce its poverty rate by simply changing the official poverty line — from $3 a day to $2 a day. What is the problem with this approach?",
+    opts: ["A) There is no problem — lower poverty lines are more accurate", "B) It makes poverty look smaller on paper without actually improving people's lives", "C) Changing the poverty line is illegal under international law", "D) The World Bank sets the poverty line, so governments cannot change it"],
+    correct: 1,
+    explanation: "Lowering the poverty line means fewer people are officially 'poor' — but their real situation hasn't changed. This is a way of manipulating statistics rather than solving the problem."
+  },
+  {
+    q: "According to the SDGs, which group should receive priority attention when designing poverty reduction programs?",
+    opts: ["A) The middle class, because they drive economic growth", "B) The working poor, because they already have jobs", "C) The most vulnerable, including women, children, elderly, and people with disabilities", "D) Young male workers, because they have the highest earning potential"],
+    correct: 2,
+    explanation: "SDG 1 explicitly focuses on the most vulnerable people — those who face multiple disadvantages and are hardest to reach. This is what 'leaving no one behind' means in practice."
+  },
+  {
+    q: "A child grows up in poverty and develops health problems because of poor nutrition. As an adult, they cannot work consistently due to illness. This example illustrates…",
+    opts: ["A) How healthcare systems fail adults", "B) Why nutrition programs are more important than poverty programs", "C) How poor health in childhood can create long-term economic disadvantage — a form of intergenerational poverty", "D) Why adult education programs are unnecessary"],
+    correct: 2,
+    explanation: "Childhood poverty affects physical and cognitive development, which limits productivity and earning capacity in adulthood — passing poverty from one generation to the next."
+  },
+  {
+    q: "Which of the following would SDG 1 consider the MOST effective long-term investment to reduce poverty?",
+    opts: ["A) Emergency food distribution after a crisis", "B) Building casinos and tourism infrastructure in poor regions", "C) Universal access to quality public education, especially for girls", "D) Raising the salary of government officials to attract talent"],
+    correct: 2,
+    explanation: "Education — especially for girls — has the strongest long-term impact on poverty reduction. Educated girls earn more, have healthier families, and contribute more to their communities."
+  },
+  {
+    q: "Country A gives direct cash transfers to poor families. Country B invests the same money in infrastructure. After 10 years, Country A shows faster poverty reduction. What might explain this?",
+    opts: ["A) Cash transfers encourage people not to work", "B) Infrastructure takes longer to benefit the poorest and may not reach remote areas, while cash transfers give immediate purchasing power", "C) Country B's government was more corrupt", "D) Infrastructure never helps reduce poverty"],
+    correct: 1,
+    explanation: "Research shows that direct cash transfers can be very effective because they give poor families immediate resources to meet needs. Infrastructure benefits are real but often take longer to reach the most vulnerable."
+  },
+  {
+    q: "Which of the following is the BEST example of 'building resilience to poverty'?",
+    opts: ["A) Teaching poor families to spend less money on food", "B) Creating savings programs and insurance schemes so families can survive income shocks without falling into extreme poverty", "C) Moving poor families to different cities", "D) Encouraging poor people to have fewer children"],
+    correct: 1,
+    explanation: "Resilience means having tools to absorb shocks — like illness, drought, or job loss — without falling into extreme poverty. Savings and insurance are key mechanisms for this."
+  },
+  {
+    q: "Two countries have the same poverty rate of 20%. In Country X, poor people have been in poverty for decades. In Country Y, most poor people move out of poverty within a few years. Which country has a more serious poverty problem, and why?",
+    opts: ["A) Country Y, because more people move in and out of poverty", "B) Country X, because persistent poverty is harder to escape and causes deeper long-term damage", "C) Both are exactly equal — the rate is the same", "D) Country Y, because constant movement creates economic instability"],
+    correct: 1,
+    explanation: "Persistent, chronic poverty is more damaging than temporary poverty. When people are poor for decades, it affects their health, their children's education, and their entire life trajectory."
+  },
+  {
+    q: "A local government builds a new road connecting a poor rural village to the nearest city. According to SDG 1 logic, why might this reduce poverty?",
+    opts: ["A) Roads make people feel safer and happier", "B) It allows villagers to sell products, access services, and find employment — connecting them to economic opportunities they were excluded from", "C) The construction itself creates enough permanent jobs to end poverty", "D) Cities always have lower poverty rates than villages"],
+    correct: 1,
+    explanation: "Infrastructure like roads reduces geographic isolation. When people can access markets, hospitals, and schools more easily, their economic and social opportunities expand significantly."
+  },
+  {
+    q: "SDG 1 talks about 'decent work' as part of poverty reduction. Which situation best represents a person who is employed but still in poverty?",
+    opts: ["A) A tech worker who earns a high salary but works long hours", "B) A factory worker who works 12 hours a day, earns below minimum wage, and has no contract or benefits", "C) A teacher who has summers off and earns a fixed salary", "D) A freelancer who earns variable income each month"],
+    correct: 1,
+    explanation: "It is possible to work full-time and still live in poverty — this is called 'working poverty.' People without contracts, fair wages, or labor protections are especially vulnerable."
+  },
+  {
+    q: "Which of these statements about the relationship between poverty and gender is most accurate?",
+    opts: ["A) Men and women are equally affected by poverty in all regions", "B) Women face a higher risk of poverty partly because they do more unpaid work and have less access to land, credit, and jobs", "C) Gender inequality is a separate issue from poverty and should be treated differently", "D) Women in poverty have more children, which causes more poverty"],
+    correct: 1,
+    explanation: "Women's poverty is often invisible in official statistics because unpaid domestic work is not counted. Structural barriers like unequal pay and limited land rights keep many women trapped in poverty."
+  },
+  {
+    q: "A community in a flood-prone area has no savings, no insurance, and houses made of wood and mud. After a flood, most families lose everything and take years to recover. According to SDG 1, the core problem here is…",
+    opts: ["A) The families chose to live in a dangerous area", "B) The lack of resilience — vulnerable communities need resources and protection to withstand and recover from shocks", "C) Climate change, which is covered by SDG 13, not SDG 1", "D) Poor construction skills in the community"],
+    correct: 1,
+    explanation: "SDG 1 explicitly targets resilience-building for the poor. Being unable to recover from a disaster is itself a poverty issue — not just a climate issue."
+  },
+  {
+    q: "Which of the following correctly explains why ending poverty (SDG 1) is called the 'foundation' of the entire 2030 Agenda?",
+    opts: ["A) Because it was the first goal written", "B) Because poverty makes it harder to achieve almost every other SDG — from health to education to climate action", "C) Because it is the most expensive goal to achieve", "D) Because the UN Secretary-General personally chose it as the most important"],
+    correct: 1,
+    explanation: "Poverty underlies almost every global challenge. Hungry people cannot focus on school (SDG 4). Sick people without income cannot afford healthcare (SDG 3). Solving poverty creates conditions for all other goals to succeed."
+  },
+  {
+    q: "A government program successfully reduces the number of people earning less than $2.15/day, but does not address access to education, healthcare, or housing. SDG 1 would consider this progress…",
+    opts: ["A) Complete — the income target has been met", "B) Partial — income is one dimension of poverty, but SDG 1 aims to end poverty in all its forms", "C) Irrelevant — income is not part of SDG 1 targets", "D) Excellent — other SDGs will take care of the rest"],
+    correct: 1,
+    explanation: "SDG 1 uses a multidimensional definition of poverty. Raising incomes is important, but without access to education, health, and housing, people are still poor in meaningful ways."
+  },
+  {
+    q: "Why does SDG 1 include a target specifically about poor people's access to land, property, and financial services?",
+    opts: ["A) Because the UN wants to redistribute all land equally", "B) Because without assets and financial tools, poor people have no safety net and cannot invest in their own future", "C) Because property ownership is the only way to measure poverty accurately", "D) Because banks asked the UN to include this target"],
+    correct: 1,
+    explanation: "Land, property, and bank accounts are tools that allow people to borrow, save, invest, and recover from setbacks. Without them, poor people remain economically excluded and vulnerable."
+  }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions);
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " questions remaining in this round";
+
+  var optsHtml = current.opts.map(function(o, i) {
+    return '<button class="opt" onclick="checkAnswer(' + i + ')">' + o + '</button>';
+  }).join("");
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-help-circle" aria-hidden="true"></i>Multiple choice</span>' +
+    '<div class="question">' + current.q + '</div>' +
+    '<div class="opts" id="opts">' + optsHtml + '</div>' +
+    '<div class="feedback" id="feedback"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(i) {
+  if (answered || !current) return;
+  answered = true;
+  var btns = document.querySelectorAll(".opt");
+  btns.forEach(function(b, idx) {
+    b.disabled = true;
+    if (idx === current.correct) b.classList.add("correct");
+    else if (idx === i && i !== current.correct) b.classList.add("wrong");
+  });
+  var fb = document.getElementById("feedback");
+  if (i === current.correct) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+}
+</script>
+</body>
+</html>
