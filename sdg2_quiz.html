@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 2 — Zero Hunger | True or False</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg-color: #DDA63A;
+    --sdg-light: #fdf6e3;
+    --sdg-mid: #f0c97a;
+    --sdg-dark: #7a5a10;
+    --true-bg: #E1F5EE; --true-border: #9FE1CB; --true-text: #085041;
+    --false-bg: #FCEBEB; --false-border: #F7C1C1; --false-text: #791F1F;
+    --bg: #ffffff; --bg-secondary: #f7f7f5;
+    --text: #1a1a18; --text-secondary: #5f5e5a; --text-tertiary: #888780;
+    --border: rgba(0,0,0,0.10); --border-hover: rgba(0,0,0,0.22);
+    --radius-md: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #3a2a00; --sdg-mid: #7a5a10; --sdg-dark: #f0c97a;
+      --true-bg: #085041; --true-border: #0F6E56; --true-text: #9FE1CB;
+      --false-bg: #501313; --false-border: #791F1F; --false-text: #F09595;
+      --bg: #1c1c1a; --bg-secondary: #262624;
+      --text: #f0efe8; --text-secondary: #b4b2a9; --text-tertiary: #888780;
+      --border: rgba(255,255,255,0.10); --border-hover: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; align-items: flex-start; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding: 0 0 2rem; }
+  .hero { background: var(--sdg-color); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius-md); flex-shrink: 0; background: white; }
+  .hero-text { flex: 1; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.75); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #ffffff; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .score-bar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); overflow: hidden; }
+  .score-item { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); }
+  .score-item:last-child { border-right: none; }
+  .score-item span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .card { background: var(--bg); border: 0.5px solid var(--border-hover); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--sdg-light); color: var(--sdg-color); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--sdg-mid); }
+  .statement { font-size: 16px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic; padding: 1rem 1.25rem; background: var(--bg-secondary); border-radius: var(--radius-md); border-left: 3px solid var(--sdg-color); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  .tf-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .tf-btn { border-radius: var(--radius-md); padding: 14px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background .12s, border-color .12s; border: 0.5px solid var(--border-hover); display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tf-btn:active { transform: scale(0.98); }
+  .tf-btn:disabled { cursor: default; opacity: 0.7; }
+  .tf-true { background: var(--true-bg); color: var(--true-text); border-color: var(--true-border); }
+  .tf-true:hover:not(:disabled) { background: #9FE1CB; }
+  .tf-false { background: var(--false-bg); color: var(--false-text); border-color: var(--false-border); }
+  .tf-false:hover:not(:disabled) { background: #F7C1C1; }
+  .tf-btn.selected-correct { outline: 3px solid #1D9E75; outline-offset: 2px; }
+  .tf-btn.selected-wrong { outline: 3px solid #E24B4A; outline-offset: 2px; opacity: 1; }
+  .tf-btn.correct-answer { outline: 3px solid #1D9E75; outline-offset: 2px; }
+  .feedback { padding: 12px 14px; border-radius: var(--radius-md); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--true-bg); color: var(--true-text); border: 0.5px solid var(--true-border); }
+  .feedback.wrong { background: var(--false-bg); color: var(--false-text); border: 0.5px solid var(--false-border); }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-hover); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg-color); border-color: var(--sdg-color); color: #ffffff; }
+  .btn-primary:hover { background: #c4922e; border-color: #c4922e; }
+  .hint { font-size: 12px; color: var(--text-tertiary); }
+  .counter { font-size: 12px; color: var(--text-tertiary); text-align: right; padding: 0 0 4px; }
+  .discuss { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius-md); background: var(--sdg-light); border: 0.5px solid var(--sdg-mid); font-size: 13px; color: var(--sdg-dark); display: none; }
+  .discuss.show { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://sdgafrica.org/images/SDG17/E_INVERTED_SDG_goals_icons-individual-RGB-02.png" alt="SDG 2 icon" onerror="this.style.display='none'">
+    <div class="hero-text">
+      <div class="hero-eyebrow">People · Goal 2 of 17</div>
+      <div class="hero-title">Zero Hunger</div>
+      <div class="hero-sub">End hunger, achieve food security and improved nutrition by 2030</div>
+    </div>
+  </div>
+  <div class="inner">
+    <div class="score-bar">
+      <div class="score-item"><span id="correct">0</span>Correct</div>
+      <div class="score-item"><span id="wrong">0</span>Wrong</div>
+      <div class="score-item"><span id="total">0</span>Statements</div>
+    </div>
+    <div style="background:var(--bg);border:0.5px solid var(--border-hover);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:12px;">
+      <div style="padding:10px 14px;background:var(--sdg-light);border-bottom:0.5px solid var(--sdg-mid);display:flex;align-items:center;gap:8px;">
+        <i class="ti ti-chart-bar" aria-hidden="true" style="font-size:14px;color:var(--sdg-color)"></i>
+        <span style="font-size:12px;font-weight:500;color:var(--sdg-dark)">SDG 2 progress snapshot — European Parliament Research Service, 2022</span>
+      </div>
+      <img src="https://www.koppertus.com/content/_processed_/d/6/csm_2_-_Zero_Hunger_01_5ae8207bb5.png" alt="SDG 2 Zero Hunger" style="width:100%;display:block;" onerror="this.parentElement.style.display='none'">
+      <div style="padding:10px 14px;font-size:12px;color:var(--text-tertiary);">Look at the data above before you start. What surprises you?</div>
+    </div>
+
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>Read each statement carefully and decide:<br>is it <strong>True</strong> or <strong>False</strong>?<br><br>20 statements about SDG 2 — some answers will surprise you.</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        Next statement
+      </button>
+      <span class="hint">Statements shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    s: "The world produces enough food to feed every person on the planet.",
+    answer: true,
+    explanation: "Correct. The world produces about 1.5 times the calories needed for the global population. The problem is not production — it is unequal distribution, food waste, and poverty preventing access.",
+    discuss: "If this is true, why do 700 million people still go hungry? What does that tell us about the real causes of hunger?"
+  },
+  {
+    s: "Most people who go hungry live in countries that do not produce food.",
+    answer: false,
+    explanation: "False. The majority of hungry people live in agricultural countries — and many are farmers themselves. Producing food does not guarantee being able to afford or access it.",
+    discuss: "How is it possible that a farmer who grows food goes hungry? What conditions might cause this?"
+  },
+  {
+    s: "If we stopped wasting food globally, we could feed approximately 2 billion more people.",
+    answer: true,
+    explanation: "True. Around one third of all food produced globally — about 1.3 billion tons — is lost or wasted every year. Eliminating this waste could dramatically reduce hunger.",
+    discuss: "Where in the food chain do you think most waste happens — at home, in supermarkets, or in transport and storage? Does your answer change what solutions seem most useful?"
+  },
+  {
+    s: "Buying more food than you need is a personal choice that does not affect hunger in other countries.",
+    answer: false,
+    explanation: "False. Food systems are globally connected. Overconsumption and waste in wealthy countries drives up global food prices and reduces availability, directly affecting people in food-insecure regions.",
+    discuss: "Does knowing this change how you think about your own daily food choices? Why or why not?"
+  },
+  {
+    s: "A child can eat three meals a day and still be malnourished.",
+    answer: true,
+    explanation: "True. Malnutrition means not getting the right nutrients — not just not getting enough calories. A diet of mostly rice or ultra-processed food can cause deficiencies in vitamins, iron, and protein even if the child feels full.",
+    discuss: "What kinds of food would you need to eat every day to avoid malnutrition? Is this accessible for everyone in your community?"
+  },
+  {
+    s: "Hunger and malnutrition are the same thing.",
+    answer: false,
+    explanation: "False. Hunger is the feeling of not having enough food. Malnutrition is a broader condition — it includes not getting the right nutrients, and can affect people who eat enough calories but have a poor-quality diet.",
+    discuss: "Can you think of a group of people who might be malnourished but not hungry? What about someone who is hungry but not malnourished?"
+  },
+  {
+    s: "Obesity and hunger can exist in the same country at the same time.",
+    answer: true,
+    explanation: "True. This is called the 'double burden of malnutrition.' In countries like Brazil, some people eat too little while others eat too much of the wrong foods. Both are forms of poor nutrition.",
+    discuss: "Why might both problems exist in the same neighborhood? What does this tell us about food systems and inequality?"
+  },
+  {
+    s: "Eating more calories always means eating better.",
+    answer: false,
+    explanation: "False. Ultra-processed foods can be extremely high in calories but very low in essential nutrients. Someone who eats a lot of these foods may be overweight and malnourished at the same time.",
+    discuss: "How does the food industry's marketing of cheap, calorie-dense food affect hunger and nutrition in poor communities?"
+  },
+  {
+    s: "Small family farms produce more than half of the world's food.",
+    answer: true,
+    explanation: "True. Despite the dominance of agribusiness in media and trade, smallholder and family farmers produce approximately 70% of the food consumed globally, often with fewer resources and less support.",
+    discuss: "If small farmers feed most of the world, why do many of them live in poverty? What policies might help them?"
+  },
+  {
+    s: "Climate change will make hunger worse in the coming decades.",
+    answer: true,
+    explanation: "True. Droughts, floods, extreme heat, and unpredictable seasons are already destroying harvests in vulnerable regions. Climate change is one of the biggest threats to food security, especially in Sub-Saharan Africa and South Asia.",
+    discuss: "Which regions or farming communities do you think are most at risk from climate-related food insecurity? What could be done to protect them?"
+  },
+  {
+    s: "Using more pesticides and technology always solves the hunger problem.",
+    answer: false,
+    explanation: "False. Technology can increase yields, but hunger is largely a problem of access and distribution, not production. Without fair land rights, credit access, and functioning markets, technology does not reach the farmers who need it most.",
+    discuss: "Who benefits most from agricultural technology? Does the answer change your view of the relationship between innovation and hunger?"
+  },
+  {
+    s: "A country that exports a lot of food cannot have a hunger problem.",
+    answer: false,
+    explanation: "False. Brazil is one of the world's largest food exporters but has millions of people living in food insecurity. Exporting food is an economic activity — it does not guarantee that local populations have access to affordable, nutritious food.",
+    discuss: "Is it fair for a country to export food while its own people go hungry? What values and policies are involved in that decision?"
+  },
+  {
+    s: "Hunger is mainly caused by a lack of food production, not by political or economic decisions.",
+    answer: false,
+    explanation: "False. Research consistently shows that hunger is primarily a problem of access, income, and political will — not total food supply. Economic inequality, conflict, corruption, and poor policies are the main drivers of hunger.",
+    discuss: "If hunger is a political problem, not a production problem, what does that mean for the solutions? Who is responsible?"
+  },
+  {
+    s: "If food prices go up by 10%, poor families are affected much more than rich families.",
+    answer: true,
+    explanation: "True. Poor families can spend up to 70% of their income on food. A 10% price increase might mean cutting meals or skipping entire food groups. For wealthier families, the same increase is barely noticeable.",
+    discuss: "What events can cause global food prices to rise suddenly? Can you think of recent examples?"
+  },
+  {
+    s: "SDG 2 only focuses on making sure people have enough calories to survive.",
+    answer: false,
+    explanation: "False. SDG 2 has a much broader vision: it includes nutrition quality, sustainable agriculture, support for small farmers, biodiversity in food systems, and fair access for all — not just calorie sufficiency.",
+    discuss: "Why might the UN have included sustainable agriculture and biodiversity in a goal about hunger? How are these connected?"
+  },
+  {
+    s: "Food waste happens mostly in homes and restaurants, not during production and transport.",
+    answer: false,
+    explanation: "False. In low-income countries, most food loss happens during production, storage, and transport due to lack of infrastructure. In high-income countries, more waste happens at the retail and consumer level. Both are serious problems.",
+    discuss: "What infrastructure improvements might reduce food loss before it even reaches consumers? Who should pay for these?"
+  },
+  {
+    s: "Improving women's access to land and agricultural resources could significantly reduce global hunger.",
+    answer: true,
+    explanation: "True. Studies show that if women farmers had the same access to resources as men, agricultural output in developing countries could increase by 20–30%, potentially reducing the number of hungry people by 100–150 million.",
+    discuss: "Why do women farmers often have less access to land, seeds, and credit than men? What barriers exist and how could they be removed?"
+  },
+  {
+    s: "Eating a diet rich in animal products like meat and dairy is more sustainable than a plant-based diet.",
+    answer: false,
+    explanation: "False. Animal agriculture uses significantly more land, water, and energy per calorie than plant-based food production. Shifting toward more plant-rich diets is consistently identified as one of the most effective ways to reduce pressure on global food systems.",
+    discuss: "Should governments encourage people to eat less meat to help achieve SDG 2? Is this realistic or fair to expect from individuals?"
+  },
+  {
+    s: "Conflict and war are among the leading causes of acute hunger in the world today.",
+    answer: true,
+    explanation: "True. The UN World Food Programme identifies conflict as the number one driver of hunger. War destroys crops, displaces farmers, disrupts supply chains, and prevents food aid from reaching people who need it.",
+    discuss: "Can you think of a current conflict that is causing a food crisis? What makes it so difficult to deliver food aid in conflict zones?"
+  },
+  {
+    s: "Achieving Zero Hunger by 2030 is considered likely given current global progress.",
+    answer: false,
+    explanation: "False. Current data shows the world is moving backwards. The number of hungry people has been rising since 2015, partly due to COVID-19, climate shocks, and ongoing conflicts. Experts warn that SDG 2 is one of the most off-track goals.",
+    discuss: "If current trends continue, what would it take to get back on track? Is 2030 still a realistic target, or should the goals be rethought?"
+  }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions);
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " statements remaining in this round";
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-toggle-left" aria-hidden="true"></i>True or false</span>' +
+    '<div class="statement">"' + current.s + '"</div>' +
+    '<div class="tf-btns">' +
+      '<button class="tf-btn tf-true" id="btn-true" onclick="checkAnswer(true)">' +
+        '<i class="ti ti-check" aria-hidden="true"></i> True' +
+      '</button>' +
+      '<button class="tf-btn tf-false" id="btn-false" onclick="checkAnswer(false)">' +
+        '<i class="ti ti-x" aria-hidden="true"></i> False' +
+      '</button>' +
+    '</div>' +
+    '<div class="feedback" id="feedback"></div>' +
+    '<div class="discuss" id="discuss"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(chosen) {
+  if (answered || !current) return;
+  answered = true;
+
+  var btnTrue = document.getElementById("btn-true");
+  var btnFalse = document.getElementById("btn-false");
+  btnTrue.disabled = true;
+  btnFalse.disabled = true;
+
+  var isCorrect = (chosen === current.answer);
+  var chosenBtn = chosen ? btnTrue : btnFalse;
+  var correctBtn = current.answer ? btnTrue : btnFalse;
+
+  correctBtn.classList.add("correct-answer");
+  if (!isCorrect) chosenBtn.classList.add("selected-wrong");
+
+  var fb = document.getElementById("feedback");
+  var disc = document.getElementById("discuss");
+
+  if (isCorrect) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+
+  disc.className = "discuss show";
+  disc.innerHTML = '<i class="ti ti-message-circle" aria-hidden="true" style="font-size:13px;vertical-align:-1px;margin-right:6px"></i><strong>Discuss:</strong> ' + current.discuss;
+}
+</script>
+</body>
+</html>
