@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 1 — No Poverty | Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red-sdg: #E5243B;
+    --red-light: #fdecea;
+    --red-mid: #f5a3ad;
+    --red-dark: #8B1520;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --bg: #ffffff; --bg-secondary: #f7f7f5;
+    --text: #1a1a18; --text-secondary: #5f5e5a; --text-tertiary: #888780;
+    --border: rgba(0,0,0,0.10); --border-hover: rgba(0,0,0,0.22);
+    --radius-md: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --red-light: #4a0c12; --red-mid: #8B1520; --red-dark: #f5a3ad;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --bg: #1c1c1a; --bg-secondary: #262624;
+      --text: #f0efe8; --text-secondary: #b4b2a9; --text-tertiary: #888780;
+      --border: rgba(255,255,255,0.10); --border-hover: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; align-items: flex-start; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding: 0 0 2rem; }
+
+  .hero {
+    background: var(--red-sdg);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 1.5rem 1.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 1.25rem;
+  }
+  .hero-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+    background: white;
+  }
+  .hero-text { flex: 1; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #ffffff; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+  .inner { padding: 0 1.25rem; }
+
+  .score-bar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); overflow: hidden; }
+  .score-item { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-secondary); background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); }
+  .score-item:last-child { border-right: none; }
+  .score-item span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+
+  .card { background: var(--bg); border: 0.5px solid var(--border-hover); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; min-height: 220px; }
+
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--red-light); color: var(--red-sdg); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--red-mid); }
+
+  .question { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.25rem; }
+
+  .opts { display: grid; gap: 8px; }
+  .opt { border: 0.5px solid var(--border-hover); border-radius: var(--radius-md); padding: 11px 14px; font-size: 14px; cursor: pointer; background: var(--bg); color: var(--text); text-align: left; transition: background .12s, border-color .12s; width: 100%; font-family: inherit; line-height: 1.5; }
+  .opt:hover:not(:disabled) { background: var(--bg-secondary); border-color: var(--red-sdg); }
+  .opt.correct { background: var(--green-50); border-color: var(--green-100); color: var(--green-800); }
+  .opt.wrong { background: var(--red-light); border-color: var(--red-mid); color: var(--red-dark); }
+  .opt:disabled { cursor: default; }
+
+  .feedback { margin-top: 1rem; padding: 12px 14px; border-radius: var(--radius-md); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .feedback.wrong { background: var(--red-light); color: var(--red-dark); border: 0.5px solid var(--red-mid); }
+
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6; }
+
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-hover); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--red-sdg); border-color: var(--red-sdg); color: #ffffff; }
+  .btn-primary:hover { background: #c01e30; border-color: #c01e30; }
+
+  .hint { font-size: 12px; color: var(--text-tertiary); }
+  .counter { font-size: 12px; color: var(--text-tertiary); text-align: right; padding: 0 0 4px; }
+
+  .dimension-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 4px 12px; border-radius: 20px; background: var(--green-50); color: var(--green-600); border: 0.5px solid var(--green-100); margin-bottom: 1.25rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <img class="hero-img" src="https://sdgafrica.org/images/SDG17/E_INVERTED_SDG_goals_icons-individual-RGB-01.png" alt="SDG 1 — No Poverty icon" onerror="this.style.display='none'">
+    <div class="hero-text">
+      <div class="hero-eyebrow">People · Goal 1 of 17</div>
+      <div class="hero-title">No Poverty</div>
+      <div class="hero-sub">End poverty in all its forms everywhere by 2030</div>
+    </div>
+  </div>
+
+  <div class="inner">
+
+    <div class="score-bar">
+      <div class="score-item"><span id="correct">0</span>Correct</div>
+      <div class="score-item"><span id="wrong">0</span>Wrong</div>
+      <div class="score-item"><span id="total">0</span>Questions</div>
+    </div>
+
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>Click the button below to start the quiz.<br>25 questions about SDG 1 — shuffled every round.</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start quiz
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        New question
+      </button>
+      <span class="hint">Questions are shuffled randomly</span>
+    </div>
+    <div class="counter" id="counter"></div>
+
+  </div>
+</div>
+
+<script>
+var questions = [
+  { q: "What does 'extreme poverty' mean according to the United Nations?", opts: ["A) Earning less than $2.15 a day", "B) Having no smartphone", "C) Living in a village with no supermarket", "D) Earning less than $10 a day"], correct: 0, explanation: "The UN defines extreme poverty as living on less than $2.15 a day. This makes it very difficult to buy food, medicine, or safe shelter." },
+  { q: "SDG 1 wants to end poverty everywhere by which year?", opts: ["A) 2025", "B) 2040", "C) 2030", "D) 2050"], correct: 2, explanation: "The Sustainable Development Goals, including SDG 1, have a deadline of 2030. That is why they are called the 2030 Agenda." },
+  { q: "Which of these is a cause of poverty?", opts: ["A) Having access to good schools", "B) Lack of jobs and economic opportunities", "C) Living in a big city", "D) Having a large family with high income"], correct: 1, explanation: "Lack of jobs and economic opportunities is one of the main causes of poverty. Without work, people cannot earn money to meet their basic needs." },
+  { q: "What is 'social protection'?", opts: ["A) A type of sunscreen", "B) Laws that protect social media users", "C) Government support for people in need, such as food assistance or unemployment benefits", "D) A program to build more police stations"], correct: 2, explanation: "Social protection includes things like unemployment benefits, food programs, and financial help for poor families. SDG 1 calls for social protection for everyone." },
+  { q: "Which group of people is most affected by poverty around the world?", opts: ["A) Elderly men in cities", "B) Children and women, especially in rural areas", "C) Young professionals in big companies", "D) University students"], correct: 1, explanation: "Children and women, particularly those living in rural or remote areas, are among the most affected by poverty worldwide." },
+  { q: "Approximately how many people lived in extreme poverty in 2023?", opts: ["A) About 1 million", "B) About 50 million", "C) About 700 million", "D) About 4 billion"], correct: 2, explanation: "Around 700 million people still live in extreme poverty today. That is why ending poverty remains one of the most urgent global goals." },
+  { q: "What does SDG 1 say about natural disasters and poverty?", opts: ["A) Natural disasters only affect rich countries", "B) Poor people are more vulnerable to disasters because they have fewer resources to recover", "C) Natural disasters have nothing to do with poverty", "D) Poverty prevents natural disasters from happening"], correct: 1, explanation: "People living in poverty often have no savings, no insurance, and no strong homes, so they suffer more when a disaster like a flood or earthquake happens." },
+  { q: "Which of these best describes 'multidimensional poverty'?", opts: ["A) Being poor in more than one country at the same time", "B) Lacking not just money, but also education, health, and clean water", "C) Having a very large family", "D) Living without a television or internet"], correct: 1, explanation: "Multidimensional poverty means people suffer from multiple problems at the same time — not just low income, but also lack of education, healthcare, and basic services." },
+  { q: "Which action can help reduce poverty?", opts: ["A) Closing public schools", "B) Reducing the minimum wage", "C) Investing in education and job training", "D) Removing health services from rural areas"], correct: 2, explanation: "Investing in education and job training helps people develop skills to find better jobs and improve their quality of life, which reduces poverty." },
+  { q: "What is the connection between poverty and hunger?", opts: ["A) There is no connection", "B) Hunger causes people to become richer", "C) People in poverty often cannot afford enough food, leading to hunger", "D) Only hungry people experience poverty"], correct: 2, explanation: "Poverty and hunger are closely linked. When people do not have enough money, they cannot buy sufficient food, which leads to hunger and malnutrition." },
+  { q: "Which continent has the highest rates of extreme poverty?", opts: ["A) Europe", "B) Sub-Saharan Africa", "C) North America", "D) Australia"], correct: 1, explanation: "Sub-Saharan Africa has the highest concentration of extreme poverty in the world, with many people living on less than $2.15 a day." },
+  { q: "How does access to clean water relate to poverty?", opts: ["A) Clean water makes people richer automatically", "B) There is no relationship between water and poverty", "C) People without clean water spend more time and money getting it, keeping them in poverty", "D) Only wealthy people need clean water"], correct: 2, explanation: "Without clean water nearby, poor families spend hours collecting water instead of working or going to school, which keeps them trapped in poverty." },
+  { q: "What does it mean to 'build resilience' against poverty?", opts: ["A) Building taller buildings in poor neighborhoods", "B) Helping people and communities recover quickly from economic shocks or disasters", "C) Making people work harder", "D) Removing all government support programs"], correct: 1, explanation: "Building resilience means helping people prepare for and recover from difficult situations like job loss or natural disasters so they do not fall deeper into poverty." },
+  { q: "Which of these is NOT a basic need that poverty prevents people from meeting?", opts: ["A) Food", "B) Shelter", "C) A luxury car", "D) Healthcare"], correct: 2, explanation: "A luxury car is not a basic need. Food, shelter, and healthcare are basic needs that people in poverty often struggle to access." },
+  { q: "What role do women play in ending poverty?", opts: ["A) Women are not related to poverty reduction", "B) Empowering women with education and equal pay helps reduce poverty for entire families", "C) Only men can reduce poverty", "D) Women should stay home to save money"], correct: 1, explanation: "When women have access to education, jobs, and equal pay, the whole family benefits. Empowering women is one of the most effective ways to reduce poverty." },
+  { q: "What is a 'poverty trap'?", opts: ["A) A physical trap used to catch animals", "B) A situation where being poor makes it harder to escape poverty", "C) A government tax on poor people", "D) A type of house built for low-income families"], correct: 1, explanation: "A poverty trap is when conditions of poverty — like lack of education, bad health, or no savings — make it very difficult for people to improve their situation." },
+  { q: "How can microfinance help people in poverty?", opts: ["A) By giving very large loans to big companies", "B) By providing small loans to poor people so they can start businesses", "C) By reducing taxes for wealthy individuals", "D) By building large factories in poor areas"], correct: 1, explanation: "Microfinance gives small loans to people who cannot access normal bank loans. This helps them start small businesses and earn income to improve their lives." },
+  { q: "Which of these best describes 'income inequality'?", opts: ["A) Everyone earns exactly the same salary", "B) The gap between the richest and poorest people in society", "C) A law that makes income illegal", "D) A type of tax system"], correct: 1, explanation: "Income inequality refers to the large gap between how much the richest and poorest people earn. High inequality often makes poverty harder to escape." },
+  { q: "Which of the following is a sign of poverty in a community?", opts: ["A) Many parks and public libraries", "B) High levels of school enrollment", "C) High rates of malnutrition and school dropout", "D) Access to public transportation"], correct: 2, explanation: "High rates of malnutrition and children dropping out of school are common signs of poverty in a community, as families cannot afford food or education." },
+  { q: "Why is education important for ending poverty?", opts: ["A) Education has no connection to poverty", "B) Education helps people get better jobs and earn more money", "C) Education makes people spend more money", "D) Only wealthy children benefit from education"], correct: 1, explanation: "Education gives people skills and knowledge to find better jobs and earn higher incomes, which is one of the most powerful tools for breaking the cycle of poverty." },
+  { q: "What percentage of the world's poor live in rural areas?", opts: ["A) About 10%", "B) About 30%", "C) About 80%", "D) About 50%"], correct: 2, explanation: "About 80% of the world's poor people live in rural areas, where access to jobs, schools, and health services is often very limited." },
+  { q: "Which of these is a way governments can help reduce poverty?", opts: ["A) Cutting spending on schools and hospitals", "B) Creating jobs, providing social benefits, and investing in public services", "C) Increasing taxes only for poor families", "D) Closing borders to international trade"], correct: 1, explanation: "Governments can reduce poverty by creating jobs, providing social benefits, and investing in public education and healthcare." },
+  { q: "What does 'leaving no one behind' mean in the context of SDG 1?", opts: ["A) Everyone must travel together", "B) All progress on poverty must include the most vulnerable and marginalized people", "C) Only rich countries need to help poor countries", "D) Governments should ignore rural communities"], correct: 1, explanation: "'Leaving no one behind' means that progress must reach everyone — especially the poorest and most vulnerable people in society." },
+  { q: "How does conflict and war contribute to poverty?", opts: ["A) Wars always make countries richer", "B) Conflict destroys jobs, infrastructure, and services, pushing people into poverty", "C) War has no effect on poverty levels", "D) Only countries that win wars become poor"], correct: 1, explanation: "Conflict and war destroy economies, schools, and hospitals. They force people to flee their homes and lose their livelihoods, which dramatically increases poverty." },
+  { q: "Which of these best explains why poverty is a global problem and not just a local one?", opts: ["A) Because poor people travel to rich countries", "B) Because poverty in one country can affect trade, migration, and stability in others", "C) Because all countries have the same level of poverty", "D) Because poverty only exists in developing countries"], correct: 1, explanation: "Poverty affects global trade, causes migration, and creates instability. That is why all 193 UN countries committed to SDG 1 — it is everyone's problem to solve." }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions);
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " questions remaining in this round";
+
+  var optsHtml = current.opts.map(function(o, i) {
+    return '<button class="opt" onclick="checkAnswer(' + i + ')">' + o + '</button>';
+  }).join("");
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-help-circle" aria-hidden="true"></i>Multiple choice</span>' +
+    '<div class="question">' + current.q + '</div>' +
+    '<div class="opts" id="opts">' + optsHtml + '</div>' +
+    '<div class="feedback" id="feedback"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(i) {
+  if (answered || !current) return;
+  answered = true;
+  var btns = document.querySelectorAll(".opt");
+  btns.forEach(function(b, idx) {
+    b.disabled = true;
+    if (idx === current.correct) b.classList.add("correct");
+    else if (idx === i && i !== current.correct) b.classList.add("wrong");
+  });
+  var fb = document.getElementById("feedback");
+  if (i === current.correct) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+}
+</script>
+</body>
+</html>
