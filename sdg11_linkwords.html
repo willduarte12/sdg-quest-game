@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 11 — Sustainable Cities | Link the Words</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg: #FD9D24;
+    --sdg-light: #fff4e6;
+    --sdg-mid: #ffc77a;
+    --sdg-dark: #7a3d00;
+    --bg: #ffffff; --bg-2: #f7f7f5;
+    --text: #1a1a18; --text-2: #5f5e5a; --text-3: #888780;
+    --border: rgba(0,0,0,0.10); --border-2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 14px;
+    --y-bg: #FAC775; --y-text: #412402; --y-border: #EF9F27;
+    --g-bg: #9FE1CB; --g-text: #04342C; --g-border: #1D9E75;
+    --b-bg: #85B7EB; --b-text: #042C53; --b-border: #185FA5;
+    --p-bg: #AFA9EC; --p-text: #26215C; --p-border: #534AB7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #3a1e00; --sdg-mid: #7a3d00; --sdg-dark: #ffc77a;
+      --bg: #1c1c1a; --bg-2: #262624;
+      --text: #f0efe8; --text-2: #b4b2a9; --text-3: #888780;
+      --border: rgba(255,255,255,0.10); --border-2: rgba(255,255,255,0.24);
+      --y-bg: #412402; --y-text: #FAC775; --y-border: #854F0B;
+      --g-bg: #085041; --g-text: #9FE1CB; --g-border: #0F6E56;
+      --b-bg: #0C447C; --b-text: #B5D4F4; --b-border: #185FA5;
+      --p-bg: #26215C; --p-text: #CECBF6; --p-border: #534AB7;
+    }
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 680px; padding-bottom: 2rem; }
+  .hero { background: var(--sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius); flex-shrink: 0; background: white; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(0,0,0,0.45); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 20px; font-weight: 500; color: #1a1a18; line-height: 1.2; margin-bottom: 3px; }
+  .hero-sub { font-size: 12px; color: rgba(0,0,0,0.5); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .instruct { font-size: 13px; color: var(--text-2); margin-bottom: 1.25rem; padding: 12px 14px; background: var(--bg-2); border-radius: var(--radius); line-height: 1.6; }
+  .mistakes { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; font-size: 13px; color: var(--text-2); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sdg); display: inline-block; }
+  .dot.used { background: var(--border-2); }
+  .found-groups { margin-bottom: 10px; }
+  .found-group { border-radius: var(--radius); padding: 10px 14px; margin-bottom: 8px; font-size: 13px; line-height: 1.5; }
+  .found-group .group-theme { font-weight: 500; font-size: 12px; margin-bottom: 4px; }
+  .found-group .group-words { font-size: 13px; }
+  .fg-y { background: var(--y-bg); color: var(--y-text); border: 0.5px solid var(--y-border); }
+  .fg-g { background: var(--g-bg); color: var(--g-text); border: 0.5px solid var(--g-border); }
+  .fg-b { background: var(--b-bg); color: var(--b-text); border: 0.5px solid var(--b-border); }
+  .fg-p { background: var(--p-bg); color: var(--p-text); border: 0.5px solid var(--p-border); }
+  .grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-bottom: 1.25rem; }
+  .word-card { background: var(--bg-2); border: 0.5px solid var(--border-2); border-radius: var(--radius); padding: 10px 6px; font-size: 13px; font-weight: 500; cursor: pointer; text-align: center; transition: background .12s, border-color .12s, transform .1s; user-select: none; min-height: 52px; display: flex; align-items: center; justify-content: center; line-height: 1.3; }
+  .word-card:hover { border-color: var(--sdg); }
+  .word-card.selected { background: var(--sdg); border-color: var(--sdg); color: #1a1a18; transform: scale(1.03); }
+  .word-card.shake { animation: shake .4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg); border-color: var(--sdg); color: #1a1a18; font-weight: 500; }
+  .btn-primary:hover { background: #e88a10; }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .msg { padding: 10px 14px; border-radius: var(--radius); font-size: 14px; margin-bottom: 12px; display: none; }
+  .msg.show { display: block; }
+  .msg-wrong { background: var(--sdg-light); color: var(--sdg-dark); border: 0.5px solid var(--sdg-mid); }
+  .msg-win { background: var(--g-bg); color: var(--g-text); border: 0.5px solid var(--g-border); }
+  .msg-lose { background: #FCEBEB; color: #791F1F; border: 0.5px solid #F7C1C1; }
+  .legend { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; font-size: 12px; color: var(--text-3); }
+  .leg { display: flex; align-items: center; gap: 5px; }
+  .leg-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .round-info { font-size: 12px; color: var(--text-3); margin-bottom: 10px; }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-2); margin-bottom: 1.5rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4SY6lrjy4r_teur7vH1S0sFAkSCK_HLJTZA&s" alt="SDG 11" onerror="this.style.display='none'">
+    <div>
+      <div class="hero-eyebrow">Prosperity · Goal 11 of 17</div>
+      <div class="hero-title">Sustainable Cities & Communities</div>
+      <div class="hero-sub">Find 4 groups of 4 words that share a hidden connection.</div>
+    </div>
+  </div>
+
+  <div class="inner">
+    <div id="start-screen" class="start-screen">
+      <p>16 words are hidden in the grid — each belongs to one of 4 secret groups.<br>Select 4 words you think belong together and click "Submit guess".<br><br>Yellow is easiest. Purple is hardest. <strong>One wrong answer and your turn is over.</strong> Discuss carefully before submitting!</p>
+      <button class="btn btn-primary" onclick="startGame()">
+        <i class="ti ti-player-play" aria-hidden="true"></i>
+        Start game
+      </button>
+    </div>
+
+    <div id="game-screen" style="display:none">
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:var(--y-bg);border:1px solid var(--y-border)"></div>Easiest</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--g-bg);border:1px solid var(--g-border)"></div>Medium</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--b-bg);border:1px solid var(--b-border)"></div>Hard</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--p-bg);border:1px solid var(--p-border)"></div>Hardest</div>
+      </div>
+
+      <div class="found-groups" id="found-groups"></div>
+      <div class="grid" id="grid"></div>
+      <div class="msg" id="msg"></div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="submit-btn" onclick="submitGuess()">
+          <i class="ti ti-check" aria-hidden="true" style="font-size:14px;vertical-align:-2px"></i>
+          Submit guess
+        </button>
+        <button class="btn" onclick="clearSelection()">
+          <i class="ti ti-x" aria-hidden="true" style="font-size:14px;vertical-align:-2px"></i>
+          Clear
+        </button>
+        <button class="btn" onclick="shuffleGrid()">
+          <i class="ti ti-arrows-shuffle" aria-hidden="true" style="font-size:14px;vertical-align:-2px"></i>
+          Shuffle
+        </button>
+      </div>
+      <div class="round-info" id="round-info"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var allPuzzles = [
+  {
+    groups: [
+      { theme: "Types of urban public transport", color: "y", words: ["Bus", "Subway", "Tram", "Ferry"] },
+      { theme: "What makes a city walkable", color: "g", words: ["Sidewalks", "Shade", "Benches", "Crosswalks"] },
+      { theme: "Urban problems caused by rapid growth", color: "b", words: ["Congestion", "Pollution", "Overcrowding", "Informality"] },
+      { theme: "Cities famous for urban transformation", color: "p", words: ["Medellín", "Curitiba", "Bogotá", "Singapore"] }
+    ]
+  },
+  {
+    groups: [
+      { theme: "Types of urban green spaces", color: "y", words: ["Park", "Garden", "Plaza", "Rooftop"] },
+      { theme: "Causes of urban flooding", color: "g", words: ["Paving", "Deforestation", "Drains", "Sprawl"] },
+      { theme: "Rights every city resident should have", color: "b", words: ["Housing", "Sanitation", "Safety", "Mobility"] },
+      { theme: "Words related to urban inequality", color: "p", words: ["Gentrification", "Segregation", "Displacement", "Exclusion"] }
+    ]
+  },
+  {
+    groups: [
+      { theme: "Things found in a favela or informal settlement", color: "y", words: ["Alley", "Density", "Resilience", "Community"] },
+      { theme: "Sustainable city features", color: "g", words: ["Cycling lanes", "Solar panels", "Green roofs", "Composting"] },
+      { theme: "Disasters that affect cities most", color: "b", words: ["Flooding", "Heatwave", "Earthquake", "Landslide"] },
+      { theme: "Words associated with smart cities", color: "p", words: ["Sensors", "Data", "Connectivity", "Automation"] }
+    ]
+  },
+  {
+    groups: [
+      { theme: "Things a city needs to be safe at night", color: "y", words: ["Lighting", "Cameras", "People", "Openness"] },
+      { theme: "Examples of urban heritage", color: "g", words: ["Cathedral", "Market", "Fortress", "Square"] },
+      { theme: "Problems with car-dependent cities", color: "b", words: ["Emissions", "Sprawl", "Noise", "Isolation"] },
+      { theme: "Cities with the highest quality of life rankings", color: "p", words: ["Vienna", "Zurich", "Auckland", "Copenhagen"] }
+    ]
+  },
+  {
+    groups: [
+      { theme: "Types of urban housing", color: "y", words: ["Apartment", "Terrace", "Penthouse", "Studio"] },
+      { theme: "Things a refugee camp and a city have in common", color: "g", words: ["Shelter", "Community", "Services", "Economy"] },
+      { theme: "Urban planning concepts", color: "b", words: ["Zoning", "Density", "Setback", "Mixed-use"] },
+      { theme: "Cities that rebuilt after conflict or disaster", color: "p", words: ["Beirut", "Hiroshima", "New Orleans", "Christchurch"] }
+    ]
+  }
+];
+
+var puzzle = null;
+var remaining = [];
+var selected = [];
+var mistakes = 4;
+var found = [];
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function resumeGame() {
+  selected = [];
+  document.getElementById("msg").className = "msg";
+  document.getElementById("round-info").textContent = "";
+  document.getElementById("submit-btn").disabled = true;
+  renderGrid();
+}
+
+function startGame() {
+  puzzle = allPuzzles[Math.floor(Math.random() * allPuzzles.length)];
+  remaining = [];
+  puzzle.groups.forEach(function(g) { g.words.forEach(function(w) { remaining.push(w); }); });
+  remaining = shuffle(remaining);
+  selected = [];
+  mistakes = 4;
+  found = [];
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("game-screen").style.display = "block";
+  renderGrid();
+  document.getElementById("found-groups").innerHTML = "";
+  document.getElementById("msg").className = "msg";
+  document.getElementById("round-info").textContent = "";
+}
+
+function renderDots() {
+  var html = "";
+  for (var i = 0; i < 4; i++) html += '<span class="dot' + (i >= mistakes ? " used" : "") + '"></span> ';
+  document.getElementById("dots").innerHTML = html;
+}
+
+function renderGrid() {
+  var grid = document.getElementById("grid");
+  grid.innerHTML = "";
+  remaining.forEach(function(word) {
+    var card = document.createElement("div");
+    card.className = "word-card" + (selected.indexOf(word) > -1 ? " selected" : "");
+    card.textContent = word;
+    card.onclick = function() { toggleWord(word); };
+    grid.appendChild(card);
+  });
+}
+
+function toggleWord(word) {
+  var idx = selected.indexOf(word);
+  if (idx > -1) {
+    selected.splice(idx, 1);
+  } else {
+    if (selected.length >= 4) return;
+    selected.push(word);
+  }
+  renderGrid();
+  document.getElementById("submit-btn").disabled = selected.length !== 4;
+}
+
+function clearSelection() {
+  selected = [];
+  renderGrid();
+  document.getElementById("submit-btn").disabled = true;
+  document.getElementById("msg").className = "msg";
+}
+
+function shuffleGrid() {
+  remaining = shuffle(remaining);
+  renderGrid();
+}
+
+function submitGuess() {
+  if (selected.length !== 4) return;
+  var matchedGroup = null;
+  puzzle.groups.forEach(function(g) {
+    if (found.indexOf(g.theme) > -1) return;
+    var allMatch = selected.every(function(w) { return g.words.indexOf(w) > -1; });
+    if (allMatch) matchedGroup = g;
+  });
+
+  var msg = document.getElementById("msg");
+
+  if (matchedGroup) {
+    found.push(matchedGroup.theme);
+    selected.forEach(function(w) { remaining.splice(remaining.indexOf(w), 1); });
+
+    var fg = document.createElement("div");
+    fg.className = "found-group fg-" + matchedGroup.color;
+    fg.innerHTML = '<div class="group-theme">' + matchedGroup.theme + '</div><div class="group-words">' + matchedGroup.words.join(" · ") + '</div>';
+    document.getElementById("found-groups").appendChild(fg);
+
+    selected = [];
+    msg.className = "msg";
+    renderGrid();
+
+    if (found.length === puzzle.groups.length) {
+      msg.className = "msg msg-win show";
+      msg.innerHTML = '<i class="ti ti-trophy" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Excellent!</strong> All four groups found! Play again with a new puzzle.';
+      document.getElementById("round-info").innerHTML = '<button class="btn btn-primary" onclick="startGame()" style="margin-top:8px"><i class="ti ti-refresh" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>New puzzle</button>';
+      document.getElementById("submit-btn").disabled = true;
+    }
+  } else {
+    var oneAway = false;
+    puzzle.groups.forEach(function(g) {
+      if (found.indexOf(g.theme) > -1) return;
+      var matchCount = selected.filter(function(w) { return g.words.indexOf(w) > -1; }).length;
+      if (matchCount === 3) oneAway = true;
+    });
+
+    var cards = document.querySelectorAll(".word-card.selected");
+    cards.forEach(function(c) { c.classList.add("shake"); setTimeout(function() { c.classList.remove("shake"); }, 400); });
+
+    var hint = oneAway
+      ? ' <em>Hint: three of your words were in the same group — one away!</em>'
+      : '';
+
+    msg.className = "msg msg-lose show";
+    msg.innerHTML = '<i class="ti ti-x" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Wrong!</strong> Your turn is over.' + hint + ' Pass to the next team.';
+
+    selected = [];
+    renderGrid();
+    document.getElementById("submit-btn").disabled = true;
+    document.getElementById("round-info").innerHTML =
+      '<button class="btn btn-primary" onclick="resumeGame()" style="margin-top:8px"><i class="ti ti-arrow-right" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Next team\'s turn</button>' +
+      '&nbsp;<button class="btn" onclick="startGame()" style="margin-top:8px"><i class="ti ti-refresh" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>New puzzle</button>';
+  }
+}
+
+function revealAll() {
+  puzzle.groups.forEach(function(g) {
+    if (found.indexOf(g.theme) > -1) return;
+    var fg = document.createElement("div");
+    fg.className = "found-group fg-" + g.color;
+    fg.innerHTML = '<div class="group-theme">' + g.theme + '</div><div class="group-words">' + g.words.join(" · ") + '</div>';
+    document.getElementById("found-groups").appendChild(fg);
+  });
+  remaining = [];
+  selected = [];
+  renderGrid();
+  document.getElementById("submit-btn").disabled = true;
+  document.getElementById("round-info").innerHTML = '<button class="btn btn-primary" onclick="startGame()" style="margin-top:8px"><i class="ti ti-refresh" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>Try a new puzzle</button>';
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("submit-btn").disabled = true;
+});
+</script>
+</body>
+</html>
