@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 12 — Responsible Consumption | Decomposition Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg: #BF8B2E;
+    --sdg-light: #fdf6e3;
+    --sdg-mid: #e8c96a;
+    --sdg-dark: #6b4a00;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --red-50: #FCEBEB; --red-100: #F7C1C1; --red-600: #A32D2D;
+    --bg: #ffffff; --bg-2: #f7f7f5;
+    --text: #1a1a18; --text-2: #5f5e5a; --text-3: #888780;
+    --border: rgba(0,0,0,0.10); --border-2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #3a2800; --sdg-mid: #6b4a00; --sdg-dark: #e8c96a;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --red-50: #501313; --red-100: #791F1F; --red-600: #F09595;
+      --bg: #1c1c1a; --bg-2: #262624;
+      --text: #f0efe8; --text-2: #b4b2a9; --text-3: #888780;
+      --border: rgba(255,255,255,0.10); --border-2: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 680px; padding-bottom: 2rem; }
+
+  .hero { background: var(--sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.25rem; display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; }
+  .hero-img { width: 68px; height: 68px; object-fit: cover; border-radius: var(--radius); flex-shrink: 0; background: white; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.75); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 20px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 3px; }
+  .hero-sub { font-size: 12px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+  .inner { padding: 0 1.25rem; }
+
+  .scorebar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-2); border-radius: var(--radius); overflow: hidden; }
+  .sc { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-2); background: var(--bg-2); text-align: center; border-right: 0.5px solid var(--border); }
+  .sc:last-child { border-right: none; }
+  .sc span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+
+  .card { background: var(--bg); border: 0.5px solid var(--border-2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; min-height: 200px; }
+  .item-display { text-align: center; margin-bottom: 1.5rem; }
+  .item-emoji { font-size: 72px; line-height: 1; display: block; margin-bottom: 10px; }
+  .item-name { font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .item-context { font-size: 13px; color: var(--text-2); }
+
+  .question { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 1.25rem; text-align: center; }
+  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .opt { border: 0.5px solid var(--border-2); border-radius: var(--radius); padding: 11px 14px; font-size: 14px; cursor: pointer; background: var(--bg); color: var(--text); text-align: center; transition: background .12s, border-color .12s; font-family: inherit; line-height: 1.4; }
+  .opt:hover:not(:disabled) { background: var(--bg-2); border-color: var(--sdg); }
+  .opt.correct { background: var(--green-50); border-color: var(--green-100); color: var(--green-800); }
+  .opt.wrong { background: var(--red-50); border-color: var(--red-100); color: var(--red-600); }
+  .opt:disabled { cursor: default; }
+
+  .feedback { margin-top: 1rem; padding: 14px 16px; border-radius: var(--radius); font-size: 14px; line-height: 1.7; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .feedback.wrong { background: var(--red-50); color: var(--red-600); border: 0.5px solid var(--red-100); }
+
+  .impact { margin-top: 10px; padding: 10px 14px; background: var(--sdg-light); border-radius: var(--radius); font-size: 13px; color: var(--sdg-dark); border: 0.5px solid var(--sdg-mid); display: none; line-height: 1.6; }
+  .impact.show { display: block; }
+
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-2); margin-bottom: 1.5rem; line-height: 1.6; }
+
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg); border-color: var(--sdg); color: #fff; }
+  .btn-primary:hover { background: #a67520; }
+  .counter { font-size: 12px; color: var(--text-3); text-align: right; padding: 0 0 4px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--sdg-light); color: var(--sdg); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--sdg-mid); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMBLMXGyVWIeoPGuOcUDW_aXiW82UPpeeLKA&s" alt="SDG 12" onerror="this.style.display='none'">
+    <div>
+      <div class="hero-eyebrow">Prosperity · Goal 12 of 17</div>
+      <div class="hero-title">Responsible Consumption</div>
+      <div class="hero-sub">How long does it take for waste to decompose in nature?</div>
+    </div>
+  </div>
+
+  <div class="inner">
+    <div class="scorebar">
+      <div class="sc"><span id="correct">0</span>Correct</div>
+      <div class="sc"><span id="wrong">0</span>Wrong</div>
+      <div class="sc"><span id="total">0</span>Questions</div>
+    </div>
+
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>Every piece of waste we throw away stays in nature for much longer than we think.<br><br>Guess how long each item takes to decompose — the answers will surprise you.</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start quiz
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        Next item
+      </button>
+      <span style="font-size:12px;color:var(--text-3)">Items shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var items = [
+  {
+    emoji: "🍌", name: "Banana peel", context: "Organic waste",
+    correct: 1, answer: "2–5 weeks",
+    opts: ["3–5 days", "2–5 weeks", "6–12 months", "5 years"],
+    explanation: "A banana peel takes about 2 to 5 weeks to decompose. It breaks down relatively quickly because it is organic — but in a landfill with no oxygen, the process takes much longer.",
+    impact: "Organic waste in landfills produces methane, a greenhouse gas 25x more potent than CO₂. Composting banana peels instead reduces emissions and enriches soil."
+  },
+  {
+    emoji: "📰", name: "Newspaper", context: "Paper waste",
+    correct: 0, answer: "6 weeks",
+    opts: ["6 weeks", "1 year", "5 years", "20 years"],
+    explanation: "A newspaper decomposes in about 6 weeks in optimal outdoor conditions. However, newspapers buried in landfills have been found intact after decades due to lack of oxygen.",
+    impact: "Recycling one ton of newspaper saves 17 trees, 380 gallons of oil, and 7,000 gallons of water. Paper recycling is one of the easiest and most impactful habits we can adopt."
+  },
+  {
+    emoji: "👕", name: "Cotton t-shirt", context: "Textile waste",
+    correct: 1, answer: "6 months",
+    opts: ["2–4 weeks", "6 months", "10 years", "200 years"],
+    explanation: "A natural cotton t-shirt takes around 6 months to decompose. But most 'fast fashion' clothes mix cotton with synthetic fibers like polyester — which can take hundreds of years.",
+    impact: "The fashion industry is responsible for 10% of global carbon emissions and 20% of industrial water pollution. Buying second-hand or choosing natural fibers makes a real difference."
+  },
+  {
+    emoji: "🧦", name: "Wool sock", context: "Textile waste",
+    correct: 1, answer: "1–5 years",
+    opts: ["3–6 months", "1–5 years", "50 years", "500 years"],
+    explanation: "Wool is a natural fiber and decomposes in 1 to 5 years. It is one of the most biodegradable textiles — unlike synthetic fabrics like nylon or polyester.",
+    impact: "Washing synthetic clothes releases microplastics into waterways. One load of laundry can release up to 700,000 microplastic fibers into the ocean."
+  },
+  {
+    emoji: "🚬", name: "Cigarette butt", context: "Toxic waste",
+    correct: 2, answer: "10–15 years",
+    opts: ["6 months", "2–3 years", "10–15 years", "100 years"],
+    explanation: "Cigarette filters are made of cellulose acetate — a type of plastic — and take 10 to 15 years to decompose. They are the most collected item in beach cleanups worldwide.",
+    impact: "Globally, 4.5 trillion cigarette butts are discarded every year. Each one can contaminate up to 500 liters of water with nicotine, arsenic, and other toxic chemicals."
+  },
+  {
+    emoji: "🛍️", name: "Plastic bag", context: "Plastic waste",
+    correct: 1, answer: "20 years",
+    opts: ["5 years", "20 years", "100 years", "500 years"],
+    explanation: "A single-use plastic bag takes approximately 20 years to decompose. It doesn't fully disappear — it breaks into microplastics that contaminate soil and water permanently.",
+    impact: "A plastic bag is used for an average of 12 minutes but survives in nature for 20 years. Over 1 trillion plastic bags are used globally every year."
+  },
+  {
+    emoji: "🥫", name: "Tin can", context: "Metal waste",
+    correct: 2, answer: "50 years",
+    opts: ["5 years", "15 years", "50 years", "500 years"],
+    explanation: "A tin-coated steel can takes around 50 years to rust and decompose completely, depending on moisture and soil conditions.",
+    impact: "Recycling a single tin can saves enough energy to power a TV for 3 hours. Steel is one of the most recycled materials in the world — but millions of cans still end up in landfills."
+  },
+  {
+    emoji: "🥤", name: "Aluminium can", context: "Metal waste",
+    correct: 2, answer: "80–200 years",
+    opts: ["10–20 years", "30–50 years", "80–200 years", "500 years"],
+    explanation: "An aluminium can takes 80 to 200 years to decompose. Yet aluminium is infinitely recyclable — a recycled can can be back on the shelf in just 60 days.",
+    impact: "Recycling aluminium uses 95% less energy than producing it from raw materials. If all cans were recycled, the energy saved could power millions of homes for a year."
+  },
+  {
+    emoji: "🧴", name: "Plastic bottle", context: "Plastic waste",
+    correct: 3, answer: "450 years",
+    opts: ["50 years", "100 years", "200 years", "450 years"],
+    explanation: "A PET plastic bottle takes approximately 450 years to decompose — meaning every plastic bottle ever produced still exists somewhere on Earth today.",
+    impact: "Only 9% of all plastic ever produced has been recycled. The rest is in landfills, oceans, or the environment. Every minute, one million plastic bottles are bought around the world."
+  },
+  {
+    emoji: "🎣", name: "Fishing line", context: "Plastic waste",
+    correct: 3, answer: "600 years",
+    opts: ["50 years", "100 years", "200 years", "600 years"],
+    explanation: "Monofilament fishing line takes up to 600 years to decompose. Abandoned fishing gear — known as 'ghost gear' — is responsible for trapping and killing millions of marine animals annually.",
+    impact: "Ghost fishing gear makes up 46% of the Great Pacific Garbage Patch. Many fishing lines are made of nylon, which never fully breaks down — just fragments into smaller and smaller pieces."
+  },
+  {
+    emoji: "🍶", name: "Glass bottle", context: "Glass waste",
+    correct: 3, answer: "1 million years",
+    opts: ["100 years", "10,000 years", "100,000 years", "1 million years"],
+    explanation: "Glass takes approximately 1 million years to decompose naturally. The good news: glass is 100% recyclable and can be melted down and remade endlessly without losing quality.",
+    impact: "Recycling one glass bottle saves enough energy to power a computer for 25 minutes. Unlike plastic, glass does not release toxic chemicals as it breaks down."
+  },
+  {
+    emoji: "☕", name: "Styrofoam cup", context: "Foam waste",
+    correct: 3, answer: "Never fully",
+    opts: ["50 years", "200 years", "500 years", "Never fully"],
+    explanation: "Styrofoam (expanded polystyrene) never fully decomposes. It only breaks into smaller pieces over hundreds of years, releasing toxic chemicals into soil and water.",
+    impact: "Styrofoam is used for just minutes but lasts forever. Many cities have banned it — but it is still produced at a rate of 14 million tons per year globally."
+  },
+  {
+    emoji: "🔋", name: "Alkaline battery", context: "Electronic waste",
+    correct: 2, answer: "100 years",
+    opts: ["10 years", "30 years", "100 years", "500 years"],
+    explanation: "A standard alkaline battery takes about 100 years to decompose, leaking mercury, cadmium, and lead into soil and groundwater as it breaks down.",
+    impact: "One battery can contaminate 600,000 liters of water. Many countries have battery recycling programs — but globally, less than 5% of batteries are properly disposed of."
+  },
+  {
+    emoji: "👟", name: "Rubber shoe sole", context: "Rubber waste",
+    correct: 2, answer: "50–80 years",
+    opts: ["5–10 years", "20–30 years", "50–80 years", "1,000 years"],
+    explanation: "The rubber sole of a shoe takes 50 to 80 years to decompose, releasing microplastics and toxic compounds in the process.",
+    impact: "The fashion industry produces over 20 billion pairs of shoes each year. Most end up in landfills. Shoe recycling programs exist but remain largely inaccessible to most consumers."
+  },
+  {
+    emoji: "💊", name: "Foam packaging", context: "Industrial waste",
+    correct: 3, answer: "500+ years",
+    opts: ["10 years", "50 years", "100 years", "500+ years"],
+    explanation: "Foam packaging used in electronics and food containers can take over 500 years to break down. Like styrofoam, it fragments into microplastics rather than disappearing.",
+    impact: "E-commerce has increased foam packaging waste dramatically. Switching to recycled cardboard or biodegradable alternatives can reduce this waste by up to 90%."
+  }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(items.slice());
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " items remaining in this round";
+
+  var shuffledOpts = current.opts.slice();
+  var correctText = shuffledOpts[current.correct];
+  shuffledOpts = shuffle(shuffledOpts);
+  var newCorrect = shuffledOpts.indexOf(correctText);
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-clock" aria-hidden="true"></i>How long to decompose?</span>' +
+    '<div class="item-display">' +
+      '<span class="item-emoji">' + current.emoji + '</span>' +
+      '<div class="item-name">' + current.name + '</div>' +
+      '<div class="item-context">' + current.context + '</div>' +
+    '</div>' +
+    '<div class="question">How long does it take to decompose in nature?</div>' +
+    '<div class="opts" id="opts">' +
+      shuffledOpts.map(function(o, i) {
+        return '<button class="opt" onclick="checkAnswer(' + i + ',' + newCorrect + ',\'' + o + '\')">' + o + '</button>';
+      }).join("") +
+    '</div>' +
+    '<div class="feedback" id="feedback"></div>' +
+    '<div class="impact" id="impact"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(i, correct, chosen) {
+  if (answered) return;
+  answered = true;
+  var btns = document.querySelectorAll(".opt");
+  btns.forEach(function(b, idx) {
+    b.disabled = true;
+    if (idx === correct) b.classList.add("correct");
+    else if (idx === i && i !== correct) b.classList.add("wrong");
+  });
+  var fb = document.getElementById("feedback");
+  var imp = document.getElementById("impact");
+  imp.innerHTML = '<i class="ti ti-bulb" aria-hidden="true" style="font-size:13px;vertical-align:-1px;margin-right:6px"></i>' + current.impact;
+  imp.className = "impact show";
+  if (i === correct) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct! ' + current.answer + '.</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite. The answer is ' + current.answer + '.</strong> ' + current.explanation;
+  }
+}
+</script>
+</body>
+</html>
