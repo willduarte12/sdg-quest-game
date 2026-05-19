@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 13 — Climate Action | Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg: #3F7E44;
+    --sdg-light: #e8f5e9;
+    --sdg-mid: #81c784;
+    --sdg-dark: #1b5e20;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --red-50: #FCEBEB; --red-100: #F7C1C1; --red-600: #A32D2D;
+    --bg: #ffffff; --bg-2: #f7f7f5;
+    --text: #1a1a18; --text-2: #5f5e5a; --text-3: #888780;
+    --border: rgba(0,0,0,0.10); --border-2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #0a2e0d; --sdg-mid: #1b5e20; --sdg-dark: #81c784;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --red-50: #501313; --red-100: #791F1F; --red-600: #F09595;
+      --bg: #1c1c1a; --bg-2: #262624;
+      --text: #f0efe8; --text-2: #b4b2a9; --text-3: #888780;
+      --border: rgba(255,255,255,0.10); --border-2: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding-bottom: 2rem; }
+  .hero { background: var(--sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius); flex-shrink: 0; background: white; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .scorebar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-2); border-radius: var(--radius); overflow: hidden; }
+  .sc { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-2); background: var(--bg-2); text-align: center; border-right: 0.5px solid var(--border); }
+  .sc:last-child { border-right: none; }
+  .sc span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .card { background: var(--bg); border: 0.5px solid var(--border-2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; min-height: 220px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--sdg-light); color: var(--sdg); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--sdg-mid); }
+  .question { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.25rem; }
+  .opts { display: grid; gap: 8px; }
+  .opt { border: 0.5px solid var(--border-2); border-radius: var(--radius); padding: 11px 14px; font-size: 14px; cursor: pointer; background: var(--bg); color: var(--text); text-align: left; transition: background .12s, border-color .12s; width: 100%; font-family: inherit; line-height: 1.5; }
+  .opt:hover:not(:disabled) { background: var(--bg-2); border-color: var(--sdg); }
+  .opt.correct { background: var(--green-50); border-color: var(--green-100); color: var(--green-800); }
+  .opt.wrong { background: var(--red-50); border-color: var(--red-100); color: var(--red-600); }
+  .opt:disabled { cursor: default; }
+  .feedback { margin-top: 1rem; padding: 12px 14px; border-radius: var(--radius); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .feedback.wrong { background: var(--red-50); color: var(--red-600); border: 0.5px solid var(--red-100); }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-2); margin-bottom: 1.5rem; line-height: 1.6; }
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg); border-color: var(--sdg); color: #fff; }
+  .btn-primary:hover { background: #2e6b32; }
+  .hint { font-size: 12px; color: var(--text-3); }
+  .counter { font-size: 12px; color: var(--text-3); text-align: right; padding: 0 0 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://iprt.uneca.org/images/sdg/en/E_Inverted_SDG_goals_13.png?v=HE3WnrGp0qv_LYkP3tCC4flCR0IrRc_u9vVuZMOhu_k" alt="SDG 13 Climate Action" onerror="this.style.display='none'">
+    <div>
+      <div class="hero-eyebrow">Planet · Goal 13 of 17</div>
+      <div class="hero-title">Climate Action</div>
+      <div class="hero-sub">25 questions about climate change — think carefully, all options look plausible.</div>
+    </div>
+  </div>
+  <div class="inner">
+    <div class="scorebar">
+      <div class="sc"><span id="correct">0</span>Correct</div>
+      <div class="sc"><span id="wrong">0</span>Wrong</div>
+      <div class="sc"><span id="total">0</span>Questions</div>
+    </div>
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>Climate change is the defining challenge of our generation — but understanding it requires more than knowing the facts.<br><br>25 scenario-based questions about climate science, climate justice, and what it actually takes to act.</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start quiz
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        New question
+      </button>
+      <span class="hint">Questions shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    q: "A coastal city in Bangladesh floods every monsoon season. Scientists link the worsening floods to rising sea levels. The city builds a seawall. A climate expert argues this is not enough. Why?",
+    opts: ["A) Seawalls are too expensive for developing countries to maintain long-term", "B) A seawall addresses the symptom but not the cause — without reducing emissions, sea levels will keep rising and eventually overwhelm any barrier", "C) Seawalls damage marine ecosystems and are prohibited under international law", "D) The flooding is caused by local deforestation, not climate change"],
+    correct: 1,
+    explanation: "Adaptation measures like seawalls buy time but don't solve the underlying problem. SDG 13 recognizes that both adaptation AND mitigation are necessary — adapting to changes already happening while urgently cutting emissions to prevent worse outcomes."
+  },
+  {
+    q: "The Amazon rainforest historically absorbed more CO₂ than it released. A 2021 study found that parts of it now release more CO₂ than they absorb. What best explains this shift?",
+    opts: ["A) Natural forest cycles mean the Amazon alternates between absorbing and releasing carbon every decade", "B) Deforestation and fires have damaged so much of the forest that degraded areas now emit more carbon than healthy areas absorb", "C) Rising temperatures make trees grow faster, which paradoxically releases stored carbon", "D) The study only measured the Brazilian portion, which is not representative of the full Amazon"],
+    correct: 1,
+    explanation: "This is one of the most alarming findings in recent climate science. The Amazon — often called 'the lungs of the Earth' — is approaching a tipping point where deforestation and drought could transform it from a carbon sink into a carbon source, dramatically accelerating global warming."
+  },
+  {
+    q: "A government announces it will reach 'net zero emissions by 2050' by planting 1 billion trees. Climate scientists welcome the trees but say this commitment alone is insufficient. The strongest reason is:",
+    opts: ["A) Trees take decades to grow and absorb significant carbon, and alone cannot offset current emission levels fast enough", "B) Planting trees is far more expensive than reducing emissions at the source", "C) Most trees planted in large government programs die within the first two years", "D) International climate agreements do not recognize tree planting as a valid carbon offset method"],
+    correct: 0,
+    explanation: "Tree planting is valuable but cannot substitute for cutting emissions. Even if 1 billion trees survived to maturity, they would offset only a fraction of annual global emissions. Net zero must be achieved primarily through actual emissions reductions, not just offsetting."
+  },
+  {
+    q: "A small island nation in the Pacific has contributed less than 0.01% of global CO₂ emissions historically, yet faces complete submersion by 2100. This situation best illustrates:",
+    opts: ["A) That climate change affects all countries equally regardless of their contribution to emissions", "B) That the countries least responsible for climate change often suffer its worst consequences — a fundamental injustice at the heart of SDG 13", "C) That small nations should negotiate relocation of their populations as a practical solution", "D) That sea level rise is partly a natural phenomenon and cannot be attributed entirely to human emissions"],
+    correct: 1,
+    explanation: "Climate justice is central to SDG 13. Countries like Tuvalu, Kiribati, and the Marshall Islands face existential threats despite emitting almost nothing historically. This creates a profound moral obligation for high-emitting countries to both cut emissions and fund adaptation in vulnerable nations."
+  },
+  {
+    q: "Scientists warn about 'climate tipping points' — thresholds beyond which changes become self-reinforcing and irreversible. Which of the following is the clearest example of a tipping point?",
+    opts: ["A) A severe drought that reduces crop yields for one growing season", "B) A hurricane that destroys coastal infrastructure and requires years to rebuild", "C) Permafrost thawing releases stored methane, which causes more warming, which thaws more permafrost — a self-reinforcing feedback loop", "D) A heatwave that causes temporary spikes in electricity demand and grid strain"],
+    correct: 2,
+    explanation: "Permafrost tipping points are among the most feared in climate science. Arctic permafrost contains twice as much carbon as is currently in the atmosphere. If warming triggers large-scale thawing, the methane and CO₂ released would cause additional warming that could become impossible to stop — regardless of human action."
+  },
+  {
+    q: "A developed country argues it should not reduce emissions as fast as others because it already cut emissions 30% since 1990. A developing country representative disagrees. What is the strongest counter-argument?",
+    opts: ["A) Developed countries should reduce emissions faster because their citizens are individually richer and can afford the transition", "B) Historical emissions matter — developed countries are responsible for most accumulated CO₂ in the atmosphere and bear greater responsibility for the crisis", "C) The 30% reduction was achieved by offshoring manufacturing to developing countries, not through genuine domestic decarbonization", "D) International law requires all countries to reduce emissions at the same absolute rate regardless of historical responsibility"],
+    correct: 1,
+    explanation: "The principle of 'common but differentiated responsibilities' is foundational to international climate agreements. Countries that industrialized first — burning fossil fuels for over a century — created most of the problem. This historical responsibility is at the center of every UN climate negotiation."
+  },
+  {
+    q: "A teenager argues: 'My recycling and shorter showers won't stop climate change — corporations need to change, not individuals.' What is the most accurate and complete response?",
+    opts: ["A) Individual actions are completely meaningless compared to systemic corporate emissions", "B) Individual actions alone cannot solve climate change, but collective consumer behavior shapes markets and political will — both individual and systemic change are necessary and reinforce each other", "C) Corporations have no real power to reduce emissions without sustained consumer pressure campaigns", "D) Individual behavior is responsible for over 70% of global emissions when consumption choices are properly measured"],
+    correct: 1,
+    explanation: "This is a false binary. Individual actions matter — not because your shower saves the planet, but because collective behavior shifts markets, normalizes low-carbon choices, and creates political constituencies that demand systemic change. The most impactful individual actions are political: voting, organizing, and demanding policy change."
+  },
+  {
+    q: "The Arctic is warming approximately four times faster than the global average. What is the main mechanism driving this?",
+    opts: ["A) The Arctic has more industrial and shipping activity than other remote regions", "B) Arctic ice reflects sunlight back into space — as it melts, darker ocean absorbs more heat, accelerating warming in a feedback loop called Arctic amplification", "C) Cold regions naturally warm faster because they have more temperature 'room' to increase from a lower baseline", "D) Ocean currents are carrying increasingly warm water from the tropics to the Arctic at accelerating rates"],
+    correct: 1,
+    explanation: "The albedo feedback loop is one of the most powerful amplifiers of Arctic warming. White ice reflects up to 90% of solar radiation. Dark ocean water absorbs up to 94%. As ice melts and exposes more ocean, the Arctic absorbs dramatically more heat — making it one of the fastest-warming places on Earth."
+  },
+  {
+    q: "A government introduces a carbon tax — making fossil fuels more expensive. Low-income families immediately report sharp increases in their energy bills. What does this reveal about climate policy design?",
+    opts: ["A) Carbon taxes are inherently harmful to economies and should be replaced with voluntary corporate commitments", "B) Climate policies can be regressive — hitting poorer households harder — unless revenues are returned to low-income citizens or invested in affordable clean energy alternatives", "C) Low-income families should prioritize reducing their carbon footprint even if it means financial hardship", "D) Carbon taxes should only apply to corporations and never to individual consumers or households"],
+    correct: 1,
+    explanation: "Carbon pricing is considered one of the most efficient climate tools, but it's not automatically fair. Well-designed carbon taxes redistribute revenues to low-income households — called 'carbon dividends' — ensuring that the transition to clean energy doesn't deepen inequality."
+  },
+  {
+    q: "IPCC reports consistently state that limiting warming to 1.5°C requires 'rapid, far-reaching and unprecedented changes in all aspects of society.' What does 'unprecedented' specifically mean here?",
+    opts: ["A) That the technological changes needed have never been attempted by any country in any sector before", "B) That the speed and scale of transformation required simultaneously across energy, transport, food, industry, and land use has no historical parallel", "C) That the IPCC is uncertain about exactly which changes are needed and in which order", "D) That the economic costs will be unprecedented and potentially trigger a global depression"],
+    correct: 1,
+    explanation: "The IPCC is not saying change is impossible — it's saying the pace is unlike anything humanity has coordinated before. Past energy transitions (like from wood to coal, or coal to oil) happened over centuries. The 1.5°C pathway requires equivalent changes in decades, across all sectors, in all countries simultaneously."
+  },
+  {
+    q: "A country achieves net zero emissions domestically but continues exporting coal to other countries. From a climate perspective, the main problem with this approach is:",
+    opts: ["A) The country loses export revenue that could fund domestic clean energy transition", "B) Exported coal still burns and releases CO₂ into the same shared atmosphere — net zero at home means nothing if the same emissions happen abroad", "C) International trade laws prohibit exporting fossil fuels from countries that have declared net zero targets", "D) Coal-importing countries will become dependent and unable to develop their own renewable energy"],
+    correct: 1,
+    explanation: "This is called 'carbon leakage' and is a real policy challenge. Australia, for example, has significant domestic climate commitments while being one of the world's largest coal exporters. CO₂ emissions don't stay within national borders — the atmosphere is shared globally."
+  },
+  {
+    q: "Coral reefs support approximately 25% of all marine species despite covering less than 1% of the ocean floor. At current warming rates, what does science predict for coral reefs by 2050?",
+    opts: ["A) Coral reefs will adapt to warmer temperatures through natural selection within a few decades", "B) At 1.5°C of warming, 70–90% of coral reefs will be lost; at 2°C, over 99% will be destroyed", "C) Coral reefs will migrate to cooler waters in higher latitudes as tropical oceans warm", "D) The impact on coral reefs depends more on local pollution than on global temperature rise"],
+    correct: 1,
+    explanation: "Coral bleaching — caused by thermal stress — is already destroying reef systems globally. The Great Barrier Reef has experienced mass bleaching events in 2016, 2017, 2020, 2022, and 2024. The half-degree difference between 1.5°C and 2°C of warming is the difference between damaged and virtually eliminated reef systems worldwide."
+  },
+  {
+    q: "A city decides to plant trees along every street to combat urban heat. A researcher points out this alone won't solve the city's climate problem. The most accurate reason is:",
+    opts: ["A) Trees produce CO₂ at night through respiration, canceling out their daytime carbon absorption", "B) Urban heat islands are driven primarily by building materials, vehicle emissions, and waste heat — trees help but cannot address these structural causes alone", "C) Tree roots damage underground infrastructure, making large-scale urban planting impractical", "D) The cooling effect of trees only works in tropical climates and is minimal in temperate cities"],
+    correct: 1,
+    explanation: "Trees are valuable for urban cooling and wellbeing, but the urban heat island effect is fundamentally driven by built environment choices: dark paving, lack of water bodies, concentrated vehicle traffic, and industrial waste heat. Effective urban climate solutions require changes to infrastructure and transportation, not just greenery."
+  },
+  {
+    q: "The Paris Agreement asks countries to submit 'Nationally Determined Contributions' — voluntary climate targets. Critics argue this structure is fundamentally weak. The strongest criticism is:",
+    opts: ["A) Voluntary targets are illegal under international law and cannot be enforced", "B) There is no binding enforcement mechanism — countries can submit any target and face no legal consequence for failing to meet it", "C) The targets are set by scientists rather than governments, removing democratic legitimacy", "D) The Paris Agreement excludes developing countries from having to submit targets"],
+    correct: 1,
+    explanation: "The Paris Agreement's reliance on voluntary national pledges is its central weakness. Unlike trade agreements or nuclear treaties, there is no international court or penalty system for countries that miss their climate targets. Progress depends entirely on domestic political will and international peer pressure."
+  },
+  {
+    q: "A country experiences a severe drought that destroys harvests and triggers food price spikes. Government officials blame 'bad luck with weather.' Scientists argue climate change is a more accurate explanation. Who is correct?",
+    opts: ["A) The government — individual weather events cannot be attributed to climate change", "B) Neither — droughts are caused by El Niño cycles, not by long-term climate change", "C) Scientists — climate attribution studies can now calculate how much climate change increased the probability and intensity of specific extreme events", "D) Both are partially right — climate change makes droughts more likely but cannot be proven to cause any specific drought"],
+    correct: 2,
+    explanation: "Climate attribution science has advanced dramatically. Studies can now calculate, for example, that a specific drought was made 40% more likely by climate change, or that a heatwave was 5°C hotter than it would have been without human emissions. This is used in climate litigation and loss-and-damage negotiations."
+  },
+  {
+    q: "Which of the following best explains why methane is particularly dangerous as a greenhouse gas in the short term?",
+    opts: ["A) Methane stays in the atmosphere for thousands of years, accumulating indefinitely", "B) Methane is over 80 times more potent than CO₂ at trapping heat over a 20-year period, making near-term methane reductions highly impactful", "C) Methane is produced exclusively by industrial processes and is therefore easier to regulate than CO₂", "D) Methane reacts with ozone to create acid rain that destroys forests and accelerates warming"],
+    correct: 1,
+    explanation: "Methane's short atmospheric lifetime (about 12 years vs centuries for CO₂) means that cutting methane emissions produces rapid climate benefits. This is why reducing leaks from gas pipelines, livestock agriculture, and landfills is considered one of the fastest available tools for slowing near-term warming."
+  },
+  {
+    q: "A technology company announces it has developed a machine that captures CO₂ directly from the air at large scale. Climate scientists say this is promising but not a solution on its own. The most important reason is:",
+    opts: ["A) Direct air capture technology has never been proven to work at any scale", "B) Even optimistic projections show direct air capture cannot remove CO₂ fast enough or cheaply enough to offset current emission rates — emissions must be cut at the source first", "C) The captured CO₂ must be buried underground, which causes earthquakes and groundwater contamination", "D) The energy required to run the machines produces more CO₂ than the machines can capture"],
+    correct: 1,
+    explanation: "Direct air capture is real and growing — but extraordinarily expensive and energy-intensive at current scale. The IEA projects it could play a role in achieving net zero, but only as a complement to massive emissions reductions, not as a substitute. Relying on future technology as a reason to delay cuts is a well-documented delay tactic."
+  },
+  {
+    q: "Indigenous communities in the Amazon often have the best track record of protecting forest carbon stocks. What does this suggest about effective climate policy?",
+    opts: ["A) Indigenous land management is based on tradition and cannot be scaled to other ecosystems", "B) Securing indigenous land rights is one of the most cost-effective strategies for protecting forests and preventing climate emissions", "C) Indigenous communities should be compensated financially for protecting forests, but not given legal land rights", "D) Forest protection by indigenous communities is effective only in the Amazon and not applicable globally"],
+    correct: 1,
+    explanation: "Research consistently shows that indigenous-managed territories have lower deforestation rates than protected areas managed by governments. Legally recognizing indigenous land rights is now recognized by the IPCC as one of the highest-impact, lowest-cost climate solutions available — yet it remains politically controversial in many countries."
+  },
+  {
+    q: "A climate scientist says 'we have about 10 years to halve global emissions to stay below 1.5°C.' A politician responds: 'We've been hearing this for 30 years and we're still here.' What is wrong with the politician's reasoning?",
+    opts: ["A) The politician is correct — scientists have consistently exaggerated the urgency of climate change", "B) The politician confuses 'catastrophe hasn't happened yet' with 'the deadline isn't real' — climate damage accumulates progressively, and each year of delay narrows the options for staying below dangerous thresholds", "C) The 10-year deadline is a political tool, not a scientific finding from the IPCC", "D) Past climate predictions have been inaccurate, so current predictions should be treated with skepticism"],
+    correct: 1,
+    explanation: "Climate change is not a cliff edge where nothing happens until a deadline passes. It's a sliding scale — every fraction of a degree of additional warming causes more harm, more irreversibility, and fewer options. The politician's logic is equivalent to saying 'I've been warned about my health for years and I'm still alive' — ignoring accumulated damage."
+  },
+  {
+    q: "Loss and damage — compensation for climate harms already occurring in vulnerable countries — became a major issue at COP27 in 2022. Which argument best explains why wealthy nations initially resisted establishing a loss and damage fund?",
+    opts: ["A) They argued that climate damage in poor countries was caused by local factors, not global emissions", "B) Accepting legal liability for loss and damage could expose wealthy nations to unlimited financial claims, setting a precedent they wanted to avoid", "C) Wealthy nations argued that existing adaptation funds were sufficient to cover all climate damage claims", "D) The UN rules prohibit wealthy nations from transferring funds directly to developing country governments"],
+    correct: 1,
+    explanation: "The loss and damage debate is fundamentally about legal and financial liability. Wealthy nations — particularly the US — feared that acknowledging responsibility for climate damage would open them to massive legal claims from affected countries. A loss and damage fund was eventually agreed at COP27, but with no agreement on who must contribute or how much."
+  },
+  {
+    q: "A student asks: 'If climate change is so serious, why don't governments just ban fossil fuels immediately?' What is the most complete and honest answer?",
+    opts: ["A) Fossil fuels are too cheap and governments cannot afford to replace them with more expensive alternatives", "B) An immediate ban is politically and economically impossible — billions of people depend on fossil fuels for heating, cooking, and transport with no affordable alternatives yet available, making rapid transition politically explosive", "C) International trade agreements prevent governments from banning fossil fuel use within their borders", "D) Scientists actually disagree about whether eliminating fossil fuels would be beneficial for the climate"],
+    correct: 1,
+    explanation: "This is one of the most honest and difficult climate questions. Fossil fuels are deeply embedded in global infrastructure, supply chains, and the daily lives of billions. A managed, rapid, and just transition is the goal — but it requires massive investment in alternatives, retraining of workers, and political courage to override well-funded fossil fuel interests."
+  },
+  {
+    q: "Climate models have been predicting warming trends for decades. How accurate have these predictions been compared to observed reality?",
+    opts: ["A) Models have significantly overestimated warming — reality has been less severe than predicted", "B) Models have generally been accurate, with some studies suggesting they may have slightly underestimated warming in certain regions", "C) Models have been so inaccurate that climate scientists now rely only on direct observation data", "D) Models predicted exact temperature rises but failed to predict any of the regional impacts like droughts and floods"],
+    correct: 1,
+    explanation: "Climate models developed in the 1970s-1990s have proven remarkably accurate in predicting global average temperature rises. In some areas — particularly Arctic warming and sea ice loss — reality has outpaced model predictions. This is not a sign that models are wrong; it suggests some feedback loops were underestimated."
+  },
+  {
+    q: "A report finds that just 20 companies are responsible for 35% of global CO₂ emissions since 1965. What is the most nuanced interpretation of this finding?",
+    opts: ["A) These 20 companies should be prosecuted for climate crimes and shut down immediately", "B) While these companies extracted and sold fossil fuels, they did so to meet demand from billions of consumers and governments — responsibility is shared across producers, consumers, and the political systems that allowed it", "C) Individual consumers have no responsibility for climate change since corporations made all the key decisions", "D) The statistic proves that carbon taxes on individuals are unfair and should be replaced with corporate-only penalties"],
+    correct: 1,
+    explanation: "Climate responsibility is genuinely complex. Fossil fuel companies extracted and sold fuels that governments permitted, societies demanded, and individuals consumed. The most robust climate solutions address all levels: corporate regulation, policy frameworks, and shifting consumer behavior. Assigning blame exclusively to corporations or individuals misses the systemic nature of the problem."
+  },
+  {
+    q: "Why does the scientific community say that 1.5°C and 2°C of warming are fundamentally different outcomes, not just a small difference?",
+    opts: ["A) 0.5°C is the threshold at which climate change becomes scientifically measurable for the first time", "B) The difference between 1.5°C and 2°C translates to hundreds of millions more people exposed to extreme heat, water stress, and flooding — and the potential triggering of irreversible tipping points", "C) International law treats the two thresholds very differently in terms of financial obligations", "D) 2°C represents the point at which climate change becomes impossible to reverse through any human action"],
+    correct: 1,
+    explanation: "The half-degree between 1.5°C and 2°C matters enormously. The IPCC projects that at 2°C versus 1.5°C: twice as many people face extreme heat stress, coral reefs go from severely damaged to virtually eliminated, and hundreds of millions more face water scarcity. It is one of the most consequential half-degrees in human history."
+  },
+  {
+    q: "At current national pledges — even if fully implemented — global temperatures are projected to rise by approximately how much by 2100?",
+    opts: ["A) 1.5°C — the Paris Agreement target will be met if all countries honor their commitments", "B) 1.8°C — slightly above the target but within an acceptable range", "C) 2.5–2.9°C — well above the Paris targets, causing severe and widespread climate impacts", "D) 4°C or more — current pledges represent almost no change from a business-as-usual scenario"],
+    correct: 2,
+    explanation: "According to UN Environment Programme analysis, current national pledges — if fully implemented — put the world on track for approximately 2.5–2.9°C of warming by 2100. This is far above the 1.5°C target and would cause severe impacts including mass displacement, ecosystem collapse, and food system disruption affecting billions of people."
+  }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions.slice());
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " questions remaining in this round";
+
+  var optsHtml = current.opts.map(function(o, i) {
+    return '<button class="opt" onclick="checkAnswer(' + i + ')">' + o + '</button>';
+  }).join("");
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-help-circle" aria-hidden="true"></i>Multiple choice</span>' +
+    '<div class="question">' + current.q + '</div>' +
+    '<div class="opts" id="opts">' + optsHtml + '</div>' +
+    '<div class="feedback" id="feedback"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(i) {
+  if (answered || !current) return;
+  answered = true;
+  var btns = document.querySelectorAll(".opt");
+  btns.forEach(function(b, idx) {
+    b.disabled = true;
+    if (idx === current.correct) b.classList.add("correct");
+    else if (idx === i && i !== current.correct) b.classList.add("wrong");
+  });
+  var fb = document.getElementById("feedback");
+  if (i === current.correct) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+}
+</script>
+</body>
+</html>
