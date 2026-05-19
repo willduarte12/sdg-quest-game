@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 5 — Gender Equality | Timeline Challenge</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg: #FF3A21; --sdg-light: #fff0ee; --sdg-mid: #ffb3aa; --sdg-dark: #8B1A0E;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --red-50: #FCEBEB; --red-100: #F7C1C1; --red-600: #A32D2D;
+    --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-800: #633806;
+    --bg: #ffffff; --bg-2: #f7f7f5;
+    --text: #1a1a18; --text-2: #5f5e5a; --text-3: #888780;
+    --border: rgba(0,0,0,0.10); --border-2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #4a1008; --sdg-mid: #8B1A0E; --sdg-dark: #ffb3aa;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --red-50: #501313; --red-100: #791F1F; --red-600: #F09595;
+      --amber-50: #3a2000; --amber-100: #633806; --amber-800: #FAC775;
+      --bg: #1c1c1a; --bg-2: #262624;
+      --text: #f0efe8; --text-2: #b4b2a9; --text-3: #888780;
+      --border: rgba(255,255,255,0.10); --border-2: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 680px; padding-bottom: 2rem; }
+
+  .hero { background: var(--sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.25rem; display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; }
+  .hero-img { width: 68px; height: 68px; object-fit: cover; border-radius: var(--radius); flex-shrink: 0; background: white; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 20px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 3px; }
+  .hero-sub { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+
+  .inner { padding: 0 1.25rem; }
+
+  .intro-card { background: var(--bg); border: 0.5px solid var(--border-2); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.25rem; }
+  .intro-card p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin-bottom: 8px; }
+  .intro-card p:last-child { margin-bottom: 0; }
+  .highlight { background: var(--sdg-light); border-left: 3px solid var(--sdg); padding: 10px 14px; border-radius: 0 var(--radius) var(--radius) 0; font-size: 13px; color: var(--sdg-dark); margin-top: 10px; line-height: 1.6; }
+
+  .scorebar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-2); border-radius: var(--radius); overflow: hidden; }
+  .sc { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-2); background: var(--bg-2); text-align: center; border-right: 0.5px solid var(--border); }
+  .sc:last-child { border-right: none; }
+  .sc span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+
+  .instruct { font-size: 13px; color: var(--text-2); margin-bottom: 1rem; padding: 10px 14px; background: var(--bg-2); border-radius: var(--radius); display: flex; align-items: center; gap: 8px; }
+
+  .cards-area { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-bottom: 1rem; }
+
+  .inv-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border-2);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    transition: border-color .15s, background .12s;
+    position: relative;
+    user-select: none;
+  }
+  .inv-card:hover:not(.locked) { border-color: var(--sdg); background: var(--sdg-light); }
+  .inv-card.selected { border-color: var(--sdg); background: var(--sdg-light); }
+  .inv-card.locked { cursor: default; }
+  .inv-card.correct-card { border-color: #1D9E75; background: var(--green-50); cursor: default; }
+  .inv-card.wrong-card { border-color: #E24B4A; background: var(--red-50); cursor: default; }
+
+  .order-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--sdg);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+  }
+  .inv-card.selected .order-badge { display: flex; }
+  .inv-card.correct-card .order-badge { display: flex; background: #1D9E75; }
+  .inv-card.wrong-card .order-badge { display: flex; background: #E24B4A; }
+
+  .card-icon { font-size: 36px; line-height: 1; }
+  .card-name { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+  .card-field { font-size: 10px; color: var(--text-3); }
+  .card-year { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-top: 2px; display: none; }
+  .card-year.show { display: inline-block; }
+  .card-year.correct-yr { background: var(--green-50); color: var(--green-800); }
+  .card-year.wrong-yr { background: var(--red-50); color: var(--red-600); }
+  .card-who { font-size: 11px; color: var(--text-3); display: none; font-style: italic; }
+  .card-who.show { display: block; }
+
+  .result-msg { padding: 12px 14px; border-radius: var(--radius); font-size: 14px; display: none; margin-bottom: 1rem; line-height: 1.6; }
+  .result-msg.show { display: block; }
+  .result-msg.all-correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .result-msg.partial { background: var(--amber-50); color: var(--amber-800); border: 0.5px solid var(--amber-100); }
+
+  .fun-fact { background: var(--sdg-light); border-radius: var(--radius); padding: 10px 14px; font-size: 13px; color: var(--sdg-dark); margin-bottom: 1rem; display: none; border: 0.5px solid var(--sdg-mid); }
+  .fun-fact.show { display: block; }
+
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg); border-color: var(--sdg); color: #fff; }
+  .btn-primary:hover { background: #d42e18; }
+  .btn:disabled { opacity: .5; cursor: default; }
+
+  .round-info { font-size: 12px; color: var(--text-3); margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://miro.medium.com/v2/resize:fit:1400/1*SQ6q5u2Go6XR_SFp5vpt_w.png" alt="SDG 5" onerror="this.style.display='none'">
+    <div>
+      <div class="hero-eyebrow">People · Goal 5 of 17</div>
+      <div class="hero-title">Gender equality — timeline challenge</div>
+      <div class="hero-sub">Inventions and discoveries by women throughout history</div>
+    </div>
+  </div>
+
+  <div class="inner">
+    <div class="intro-card">
+      <p>Throughout history, women have invented and discovered things that changed everyday life — yet many of their names were left out of textbooks, and credit was often given to men.</p>
+      <p>From the dishwasher to the chocolate chip cookie, from the windshield wiper to Monopoly — women created products and solutions that billions of people use every single day.</p>
+      <div class="highlight">
+        <strong>SDG 5 — Gender Equality</strong> recognizes that true equality means acknowledging women's contributions in every field — including science, technology, and invention. Knowing these names is part of building a more equal world.
+      </div>
+    </div>
+
+    <div class="scorebar">
+      <div class="sc"><span id="s-correct">0</span>Correct</div>
+      <div class="sc"><span id="s-wrong">0</span>Wrong</div>
+      <div class="sc"><span id="s-total">0</span>Rounds</div>
+    </div>
+
+    <div class="instruct">
+      <i class="ti ti-hand-click" aria-hidden="true" style="font-size:18px;color:#FF3A21;flex-shrink:0"></i>
+      Click the cards <strong style="margin:0 4px">in order from oldest to most recent</strong>. The number of your click appears on each card. Then click "Check order".
+    </div>
+
+    <div class="round-info" id="round-info"></div>
+    <div class="cards-area" id="cards-area"></div>
+    <div class="result-msg" id="result-msg"></div>
+    <div class="fun-fact" id="fun-fact"></div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="check-btn" onclick="checkOrder()" disabled>
+        <i class="ti ti-check" aria-hidden="true" style="font-size:14px;vertical-align:-2px"></i>
+        Check order
+      </button>
+      <button class="btn" id="reset-btn" onclick="resetRound()" style="display:none">
+        <i class="ti ti-arrow-back-up" aria-hidden="true" style="font-size:14px;vertical-align:-2px"></i>
+        Try again
+      </button>
+      <button class="btn" id="next-btn" onclick="nextRound()" style="display:none">
+        <i class="ti ti-refresh" aria-hidden="true" style="font-size:14px;vertical-align:-2px"></i>
+        Next round
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+var allInventions = [
+  {name:"Flat-bottomed paper bag",who:"Margaret Knight",year:1868,icon:"🛍️",field:"Everyday life",fact:"Margaret Knight invented the machine that makes flat-bottomed paper bags — the kind still used in grocery stores today. A man tried to steal her patent, claiming a woman couldn't have invented it. She took him to court and won."},
+  {name:"Dishwasher",who:"Josephine Cochrane",year:1886,icon:"🍽️",field:"Home",fact:"Josephine Cochrane invented the first practical dishwasher because her servants kept chipping her fine china. She founded a company that eventually became KitchenAid."},
+  {name:"Windshield wiper",who:"Mary Anderson",year:1903,icon:"🚗",field:"Transport",fact:"Mary Anderson invented the windshield wiper after watching a tram driver struggle with snow on the windscreen during a trip to New York. It became standard in all cars by 1916."},
+  {name:"Monopoly board game",who:"Elizabeth Magie",year:1903,icon:"🎲",field:"Games",fact:"Elizabeth Magie created 'The Landlord's Game' in 1903 to teach people about land and taxes. A man later copied her design and sold it to Parker Brothers as Monopoly. She received just $500 and no royalties."},
+  {name:"Retractable dog leash",who:"Mary Delaney",year:1908,icon:"🐕",field:"Pet care",fact:"Mary Delaney patented the retractable dog leash in 1908. The design is so effective it remains essentially unchanged more than a century later."},
+  {name:"Chocolate chip cookie",who:"Ruth Wakefield",year:1938,icon:"🍪",field:"Food",fact:"Ruth Wakefield invented the chocolate chip cookie at her Toll House Inn in Massachusetts. She sold the recipe to Nestlé in exchange for a lifetime supply of chocolate."},
+  {name:"Disposable diaper",who:"Marion Donovan",year:1951,icon:"👶",field:"Baby care",fact:"Marion Donovan invented the first waterproof diaper cover in 1951 using a shower curtain. She was told by manufacturers that her idea was unnecessary. She proved them wrong and sold the patent for $1 million."},
+  {name:"Correction fluid",who:"Bette Nesmith Graham",year:1956,icon:"✏️",field:"Office",fact:"Bette Nesmith Graham, a secretary and single mother, invented Liquid Paper in her kitchen blender. She sold the company to Gillette for $47.5 million in 1979. She was also the mother of Michael Nesmith from The Monkees."},
+  {name:"Non-reflective glass",who:"Katharine Blodgett",year:1938,icon:"🪟",field:"Optics",fact:"Katharine Blodgett invented non-reflective glass — the kind used in camera lenses, eyeglasses, and display screens. She was the first woman to earn a PhD in physics from Cambridge University."},
+  {name:"Fire escape",who:"Anna Connelly",year:1887,icon:"🏗️",field:"Safety",fact:"Anna Connelly patented the exterior fire escape bridge in 1887, allowing people to cross between buildings during fires. Her design became standard and was eventually required by New York building law."},
+  {name:"Central heating system",who:"Alice Parker",year:1919,icon:"🔥",field:"Home comfort",fact:"Alice Parker was the first African American woman to receive a heating patent — for a natural gas heating system with independent room controls. This concept became the foundation of modern central heating."},
+  {name:"Submarine telescope & lamp",who:"Sarah Mather",year:1845,icon:"🔦",field:"Navigation",fact:"Sarah Mather invented the submarine telescope and lamp in 1845, allowing sailors to inspect ships underwater for the first time. Her invention was used by navies and commercial shipping."},
+  {name:"Colored flare signal",who:"Martha Coston",year:1859,icon:"🚨",field:"Safety",fact:"Martha Coston developed maritime signal flares based on unfinished notes from her late husband. She spent 10 years perfecting the technology and negotiated the navy contracts entirely by herself."},
+  {name:"Car heater",who:"Margaret Wilcox",year:1893,icon:"🌡️",field:"Transport",fact:"Margaret Wilcox invented the first car heater in 1893, which worked by directing air over the engine. She was one of the first female mechanical engineers in the United States."},
+  {name:"Caller ID",who:"Shirley Ann Jackson",year:1974,icon:"📞",field:"Communication",fact:"Shirley Ann Jackson was the first African American woman to earn a PhD from MIT. Her research at Bell Labs led directly to caller ID, call waiting, and fiber optic cables — technologies used by billions of people daily."},
+  {name:"Home security system",who:"Marie Van Brittan Brown",year:1966,icon:"📹",field:"Safety",fact:"Marie Van Brittan Brown invented the first home security system with a camera and monitor in 1966 in New York. Her design is the direct ancestor of modern CCTV home security systems."},
+  {name:"Circular saw",who:"Tabitha Babbitt",year:1813,icon:"🪚",field:"Tools",fact:"Tabitha Babbitt was a Shaker community member who noticed sawyers wasting energy with back-and-forth saws. She designed a circular blade that cuts on every rotation — now standard in every workshop."},
+  {name:"Life raft",who:"Maria Beasley",year:1882,icon:"🛟",field:"Safety",fact:"Maria Beasley held 15 patents and was a self-made millionaire. Her improved life raft design — featuring guard rails and floats — was used on the Titanic and is credited with saving hundreds of lives."},
+  {name:"Elevated railway noise reduction",who:"Mary Walton",year:1881,icon:"🚆",field:"Engineering",fact:"Mary Walton devised a system to reduce the deafening noise of elevated railway tracks in New York City. She tested it in a model built in her basement before presenting it to city engineers."},
+  {name:"Ice cream maker",who:"Nancy Johnson",year:1843,icon:"🍦",field:"Food",fact:"Nancy Johnson patented the hand-cranked ice cream maker in 1843 — the direct ancestor of every modern ice cream machine. She sold the patent for $200. The buyer made a fortune."},
+  {name:"Kevlar",who:"Stephanie Kwolek",year:1965,icon:"🦺",field:"Materials",fact:"Stephanie Kwolek invented Kevlar — a material five times stronger than steel — while working at DuPont. It is used in bulletproof vests, helmets, and safety equipment worldwide and has saved countless lives."},
+  {name:"Computer compiler",who:"Grace Hopper",year:1952,icon:"💻",field:"Computing",fact:"Grace Hopper invented the first compiler — a program that translates human-readable code into machine language. She also popularized the word 'debugging' after removing an actual moth from a computer relay."},
+  {name:"Monopoly — The Landlord's Game",who:"Elizabeth Magie",year:1903,icon:"🏠",field:"Games",fact:"Elizabeth Magie's original game had two rule sets: one that showed how landlords get rich, and one that showed how shared ownership helps everyone. Only the landlord version survived as Monopoly."},
+  {name:"Wireless frequency hopping",who:"Hedy Lamarr",year:1942,icon:"📡",field:"Technology",fact:"Hedy Lamarr was a Hollywood actress who co-invented frequency-hopping spread spectrum during World War II. This technology later became the foundation of WiFi, GPS, and Bluetooth — used by billions every day."},
+  {name:"Paper bag machine",who:"Margaret Knight",year:1868,icon:"📦",field:"Industry",fact:"Margaret Knight filed her first patent at age 12 for a safety device for textile looms. She went on to file over 20 patents in her lifetime — in a century when women were not expected to be inventors."},
+  {name:"Syringe (one-handed)",who:"Letitia Mumford Geer",year:1899,icon:"💉",field:"Medicine",fact:"Letitia Geer's one-handed syringe design made self-injection possible for the first time, transforming medical care for patients who needed regular medication without a nurse or doctor present."},
+  {name:"Windshield wiper (automatic)",who:"Charlotte Bridgwood",year:1917,icon:"🌧️",field:"Transport",fact:"Charlotte Bridgwood patented the automatic windshield wiper in 1917 — an electric version of Mary Anderson's manual one. Like Anderson, she struggled to get the auto industry to adopt it."},
+  {name:"Scotchgard fabric protector",who:"Patsy Sherman",year:1956,icon:"🧴",field:"Chemistry",fact:"Patsy Sherman co-invented Scotchgard by accident — a lab assistant spilled a compound on her shoe and nothing could clean it off. She recognized the commercial potential immediately and patented it."},
+  {name:"Baby carrier",who:"Ann Moore",year:1969,icon:"🎒",field:"Baby care",fact:"Ann Moore invented the Snugli baby carrier after observing African mothers carrying babies close to their bodies during Peace Corps service in Togo. It became one of the most popular baby products in America."},
+  {name:"Monopoly tokens",who:"Ruth Handler",year:1959,icon:"🎠",field:"Toys",fact:"Ruth Handler invented the Barbie doll in 1959, giving girls a doll with adult proportions for the first time. She co-founded Mattel and is one of the most influential toy designers in history."},
+];
+
+var rounds = [];
+var currentCards = [];
+var clickOrder = [];
+var checked = false;
+var score = {correct:0,wrong:0,total:0};
+
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+
+function buildRounds(){
+  var pool=shuffle(allInventions.slice());
+  rounds=[];
+  while(pool.length>=4){
+    var g=pool.splice(0,4);
+    rounds.push(g);
+  }
+}
+
+function nextRound(){
+  if(rounds.length===0) buildRounds();
+  var group=rounds.shift();
+  currentCards=shuffle(group.slice().sort(function(a,b){return a.year-b.year;}));
+  clickOrder=[];
+  checked=false;
+  document.getElementById("result-msg").className="result-msg";
+  document.getElementById("fun-fact").className="fun-fact";
+  document.getElementById("next-btn").style.display="none";
+  document.getElementById("reset-btn").style.display="none";
+  document.getElementById("check-btn").style.display="inline-flex";
+  document.getElementById("check-btn").disabled=true;
+  document.getElementById("round-info").textContent=rounds.length+" rounds remaining in this set";
+  renderCards();
+}
+
+function renderCards(){
+  var area=document.getElementById("cards-area");
+  area.innerHTML="";
+  currentCards.forEach(function(inv,i){
+    var orderIdx = clickOrder.indexOf(i);
+    var isSelected = orderIdx > -1;
+    var card=document.createElement("div");
+    card.className="inv-card" + (isSelected ? " selected" : "") + (checked ? " locked" : "");
+    card.onclick = function(){ if(!checked) toggleCard(i); };
+
+    var badge = '<div class="order-badge">' + (isSelected ? (orderIdx+1) : "") + '</div>';
+    var yr = '<div class="card-year' + (checked ? ' show ' + (getCorrectPos(i)===orderIdx ? 'correct-yr' : 'wrong-yr') : '') + '">' + inv.year + '</div>';
+    var who = '<div class="card-who' + (checked ? ' show' : '') + '">' + inv.who + '</div>';
+
+    if(checked){
+      var correctPos = getCorrectPos(i);
+      if(correctPos === orderIdx){
+        card.classList.add("correct-card");
+      } else {
+        card.classList.add("wrong-card");
+      }
+    }
+
+    card.innerHTML=
+      badge+
+      '<div class="card-icon">'+inv.icon+'</div>'+
+      '<div class="card-name">'+inv.name+'</div>'+
+      '<div class="card-field">'+inv.field+'</div>'+
+      yr+who;
+
+    area.appendChild(card);
+  });
+}
+
+function getCorrectPos(cardIdx){
+  var sorted = currentCards.slice().sort(function(a,b){return a.year-b.year;});
+  var cardYear = currentCards[cardIdx].year;
+  return sorted.findIndex(function(c){ return c.year === cardYear; });
+}
+
+function toggleCard(i){
+  var idx = clickOrder.indexOf(i);
+  if(idx > -1){
+    // deselect: remove and shift subsequent
+    clickOrder.splice(idx,1);
+  } else {
+    if(clickOrder.length < 4){
+      clickOrder.push(i);
+    }
+  }
+  document.getElementById("check-btn").disabled = clickOrder.length !== 4;
+  renderCards();
+}
+
+function checkOrder(){
+  if(clickOrder.length!==4) return;
+  checked=true;
+  score.total++;
+  document.getElementById("s-total").textContent=score.total;
+
+  var sorted=currentCards.slice().sort(function(a,b){return a.year-b.year;});
+  var allRight=true;
+  clickOrder.forEach(function(cardIdx, pos){
+    if(currentCards[cardIdx].year !== sorted[pos].year) allRight=false;
+  });
+
+  renderCards();
+
+  var msg=document.getElementById("result-msg");
+  var fact=document.getElementById("fun-fact");
+  var randomFact=currentCards[Math.floor(Math.random()*currentCards.length)].fact;
+  fact.innerHTML='<i class="ti ti-star" aria-hidden="true" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i><strong>Did you know?</strong> '+randomFact;
+  fact.className="fun-fact show";
+
+  if(allRight){
+    score.correct++;
+    document.getElementById("s-correct").textContent=score.correct;
+    msg.className="result-msg all-correct show";
+    msg.innerHTML='<i class="ti ti-trophy" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i><strong>Perfect order!</strong> All four inventions in the correct sequence.';
+  } else {
+    score.wrong++;
+    document.getElementById("s-wrong").textContent=score.wrong;
+    var correctStr=sorted.map(function(inv){return "<strong>"+inv.year+"</strong> — "+inv.name;}).join(" → ");
+    msg.className="result-msg partial show";
+    msg.innerHTML='<i class="ti ti-x" aria-hidden="true" style="font-size:16px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> Correct order: '+correctStr;
+  }
+
+  document.getElementById("check-btn").style.display="none";
+  document.getElementById("reset-btn").style.display="none";
+  document.getElementById("next-btn").style.display="inline-flex";
+}
+
+function resetRound(){
+  clickOrder=[];
+  checked=false;
+  document.getElementById("result-msg").className="result-msg";
+  document.getElementById("fun-fact").className="fun-fact";
+  document.getElementById("check-btn").disabled=true;
+  document.getElementById("reset-btn").style.display="none";
+  renderCards();
+}
+
+buildRounds();
+nextRound();
+</script>
+</body>
+</html>
