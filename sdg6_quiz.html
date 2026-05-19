@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 6 — Clean Water & Sanitation | True or False</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg: #26BDE2;
+    --sdg-light: #e6f9fd;
+    --sdg-mid: #7ddcf0;
+    --sdg-dark: #0a4f63;
+    --true-bg: #E1F5EE; --true-border: #9FE1CB; --true-text: #085041;
+    --false-bg: #FCEBEB; --false-border: #F7C1C1; --false-text: #791F1F;
+    --bg: #ffffff; --bg-2: #f7f7f5;
+    --text: #1a1a18; --text-2: #5f5e5a; --text-3: #888780;
+    --border: rgba(0,0,0,0.10); --border-2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #0a2a33; --sdg-mid: #0a4f63; --sdg-dark: #7ddcf0;
+      --true-bg: #085041; --true-border: #0F6E56; --true-text: #9FE1CB;
+      --false-bg: #501313; --false-border: #791F1F; --false-text: #F09595;
+      --bg: #1c1c1a; --bg-2: #262624;
+      --text: #f0efe8; --text-2: #b4b2a9; --text-3: #888780;
+      --border: rgba(255,255,255,0.10); --border-2: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding-bottom: 2rem; }
+  .hero { background: var(--sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius); flex-shrink: 0; background: white; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.75); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .scorebar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-2); border-radius: var(--radius); overflow: hidden; }
+  .sc { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-2); background: var(--bg-2); text-align: center; border-right: 0.5px solid var(--border); }
+  .sc:last-child { border-right: none; }
+  .sc span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .card { background: var(--bg); border: 0.5px solid var(--border-2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--sdg-light); color: var(--sdg); display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--sdg-mid); }
+  .statement { font-size: 16px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic; padding: 1rem 1.25rem; background: var(--bg-2); border-left: 3px solid var(--sdg); border-radius: 0 var(--radius) var(--radius) 0; }
+  .tf-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1rem; }
+  .tf-btn { border-radius: var(--radius); padding: 14px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background .12s, border-color .12s; border: 0.5px solid var(--border-2); display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .tf-btn:active { transform: scale(0.98); }
+  .tf-btn:disabled { cursor: default; opacity: 0.7; }
+  .tf-true { background: var(--true-bg); color: var(--true-text); border-color: var(--true-border); }
+  .tf-true:hover:not(:disabled) { background: #9FE1CB; }
+  .tf-false { background: var(--false-bg); color: var(--false-text); border-color: var(--false-border); }
+  .tf-false:hover:not(:disabled) { background: #F7C1C1; }
+  .tf-btn.selected-correct { outline: 3px solid #1D9E75; outline-offset: 2px; }
+  .tf-btn.selected-wrong { outline: 3px solid #E24B4A; outline-offset: 2px; opacity: 1; }
+  .tf-btn.correct-answer { outline: 3px solid #1D9E75; outline-offset: 2px; }
+  .feedback { padding: 12px 14px; border-radius: var(--radius); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--true-bg); color: var(--true-text); border: 0.5px solid var(--true-border); }
+  .feedback.wrong { background: var(--false-bg); color: var(--false-text); border: 0.5px solid var(--false-border); }
+  .discuss { margin-top: 10px; padding: 10px 14px; border-radius: var(--radius); background: var(--sdg-light); border: 0.5px solid var(--sdg-mid); font-size: 13px; color: var(--sdg-dark); display: none; }
+  .discuss.show { display: block; }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-2); margin-bottom: 1.5rem; line-height: 1.6; }
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg); border-color: var(--sdg); color: #fff; }
+  .btn-primary:hover { background: #1aa8cc; }
+  .hint { font-size: 12px; color: var(--text-3); }
+  .counter { font-size: 12px; color: var(--text-3); text-align: right; padding: 0 0 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSccrC7Bj-6qRRZdSfLfT5x3QlWXojmo6NfuA&s" alt="SDG 6 Clean Water" onerror="this.style.display='none'">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Planet · Goal 6 of 17</div>
+      <div class="hero-title">Clean Water & Sanitation</div>
+      <div class="hero-sub">True or false? Some answers will surprise you.</div>
+    </div>
+  </div>
+
+  <div class="inner">
+    <div class="scorebar">
+      <div class="sc"><span id="correct">0</span>Correct</div>
+      <div class="sc"><span id="wrong">0</span>Wrong</div>
+      <div class="sc"><span id="total">0</span>Statements</div>
+    </div>
+
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>Water is the most essential resource on Earth — yet billions of people still don't have safe access to it.<br><br>Read each statement carefully. Is it <strong>True</strong> or <strong>False</strong>?<br>Some answers will challenge what you think you know.</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        Next statement
+      </button>
+      <span class="hint">Statements shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    s: "Only 3% of all water on Earth is fresh water.",
+    answer: true,
+    explanation: "True. About 97% of Earth's water is salt water in the oceans. Of the 3% that is fresh, most is locked in glaciers and ice caps — leaving less than 1% accessible for human use.",
+    discuss: "If fresh water is so rare, why do we treat it as an unlimited resource? What habits in your daily life use the most water?"
+  },
+  {
+    s: "Boiling water makes it completely safe to drink.",
+    answer: false,
+    explanation: "False. Boiling kills bacteria, viruses, and parasites — but it does not remove heavy metals like lead or arsenic, or chemical pollutants like pesticides. In many contaminated water sources, boiling alone is not enough.",
+    discuss: "Millions of people rely on boiling as their only water treatment. What does this tell us about the gap between what people know and what resources they actually have?"
+  },
+  {
+    s: "Brazil has the largest freshwater reserves in the world.",
+    answer: true,
+    explanation: "True. Brazil holds approximately 12% of the world's surface fresh water, largely due to the Amazon River basin. Yet millions of Brazilians still lack access to safe drinking water and basic sanitation.",
+    discuss: "How is it possible that the country with the most fresh water still has people without access to clean water? What does this say about distribution versus availability?"
+  },
+  {
+    s: "Most of the water humans use goes to drinking and cooking.",
+    answer: false,
+    explanation: "False. Agriculture accounts for approximately 70% of global freshwater use, industry for about 20%, and domestic use — including drinking, cooking, and hygiene — accounts for only 10%.",
+    discuss: "If agriculture uses 70% of our water, what food choices might reduce water consumption? Does eating less meat actually make a difference?"
+  },
+  {
+    s: "Around 2 billion people currently lack access to safe drinking water.",
+    answer: true,
+    explanation: "True. According to WHO and UNICEF, approximately 2 billion people drink water that is contaminated with feces, which transmits diseases like cholera, typhoid, and diarrhea — one of the leading killers of children under 5.",
+    discuss: "Diarrhea caused by contaminated water kills more children than malaria and HIV combined. Why does this crisis receive less media attention than other global health issues?"
+  },
+  {
+    s: "Lack of clean water affects girls' education more than boys' education.",
+    answer: true,
+    explanation: "True. In many countries, collecting water is considered women's and girls' work. Girls who spend hours fetching water every day cannot attend school. Access to clean water near homes directly increases girls' school enrollment.",
+    discuss: "How are SDG 6 (clean water) and SDG 4 (quality education) and SDG 5 (gender equality) connected in this case? Can you solve one without solving the others?"
+  },
+  {
+    s: "Flushing a toilet uses less water than taking a 5-minute shower.",
+    answer: false,
+    explanation: "False. A standard flush uses 6–13 liters of water. A 5-minute shower uses approximately 50–100 liters depending on the showerhead. However, older toilets can use up to 20 liters per flush.",
+    discuss: "Which daily habits do you think waste the most water? What would it take for people to actually change them?"
+  },
+  {
+    s: "Climate change is making water scarcity worse.",
+    answer: true,
+    explanation: "True. Climate change is altering rainfall patterns, accelerating glacier melt, intensifying droughts, and increasing floods. Regions that were already water-stressed are being hit hardest — often the poorest communities.",
+    discuss: "Is water scarcity a natural problem or a human-made one? Is the answer different in different parts of the world?"
+  },
+  {
+    s: "Groundwater, once polluted, can clean itself naturally within a few years.",
+    answer: false,
+    explanation: "False. Groundwater contamination can persist for decades or even centuries. Unlike rivers that can flush pollutants out, aquifers move very slowly. Cleaning them is extraordinarily expensive and technically difficult.",
+    discuss: "Many agricultural chemicals and industrial waste seep into groundwater silently. Who should be responsible for preventing and paying for this contamination?"
+  },
+  {
+    s: "Poor sanitation kills more people than war.",
+    answer: true,
+    explanation: "True. Diseases linked to unsafe water and poor sanitation — including diarrhea, cholera, and typhoid — kill approximately 1.4 million people per year. This is significantly more than the annual death toll from armed conflict.",
+    discuss: "If poor sanitation kills more people than war, why does it receive so much less funding, attention, and media coverage? What does that say about whose lives we prioritize globally?"
+  },
+  {
+    s: "Desalination — turning ocean water into drinking water — can solve the global water crisis.",
+    answer: false,
+    explanation: "False. Desalination is expensive, energy-intensive, and produces toxic brine that harms marine ecosystems. It works in wealthy coastal countries but is not accessible for the poorest communities that need water most.",
+    discuss: "Technology can solve technical problems — but can it solve political and economic ones? Who decides which communities get access to expensive solutions like desalination?"
+  },
+  {
+    s: "Investing in clean water and sanitation saves money in the long run.",
+    answer: true,
+    explanation: "True. The WHO estimates that every $1 invested in water and sanitation returns $4 to $34 in economic benefits — through reduced healthcare costs, increased productivity, and fewer school absences.",
+    discuss: "If clean water investments have such high returns, why do many governments still underfund them? Who benefits most from leaving the water crisis unsolved?"
+  },
+  {
+    s: "Rivers and lakes can recover from pollution if humans stop polluting them.",
+    answer: true,
+    explanation: "True — but recovery takes time. The Thames River in London was declared 'biologically dead' in the 1950s due to industrial pollution. After decades of cleanup, it now supports over 115 species of fish. Recovery is possible but requires sustained effort.",
+    discuss: "The Thames recovery took over 50 years. Is this realistic as a model for rivers in developing countries? What would need to happen differently?"
+  },
+  {
+    s: "In many countries, women and girls spend more than 6 hours a day collecting water.",
+    answer: true,
+    explanation: "True. In Sub-Saharan Africa, women and girls collectively spend 200 million hours per day collecting water. This time cannot be spent on education, work, or rest — trapping families in cycles of poverty.",
+    discuss: "If a technology could deliver clean water to every home in Sub-Saharan Africa tomorrow, what other changes would follow? Think about education, economy, gender equality."
+  },
+  {
+    s: "Plastic water bottles are a reliable solution to the global water crisis.",
+    answer: false,
+    explanation: "False. Plastic bottles are expensive for poor families, create massive plastic waste, and are often no cleaner than tap water in wealthy countries. They address individual thirst but do nothing to fix infrastructure — and create a new environmental crisis.",
+    discuss: "Companies that sell bottled water in water-scarce regions are sometimes criticized for 'privatizing' a basic human right. Do you agree? Should water ever be a product for profit?"
+  },
+  {
+    s: "Access to clean water is officially recognized as a human right by the United Nations.",
+    answer: true,
+    explanation: "True. In 2010, the UN General Assembly explicitly recognized the right to safe and clean drinking water and sanitation as a human right. Yet it remains unenforceable in many countries where millions still lack access.",
+    discuss: "If clean water is a human right, what happens when governments or companies fail to provide it? Who enforces human rights when no one is held accountable?"
+  },
+  {
+    s: "Agriculture is the biggest source of water pollution worldwide.",
+    answer: true,
+    explanation: "True. Pesticides, fertilizers, and animal waste from farms are the leading cause of water pollution globally. Nitrogen and phosphorus runoff from farms cause algal blooms that kill aquatic life and make water unsafe.",
+    discuss: "We need agriculture to feed the world — but agriculture is also destroying our water. How do we solve both problems at the same time? Is it even possible?"
+  },
+  {
+    s: "Children in poor countries are more likely to die from contaminated water than from violence.",
+    answer: true,
+    explanation: "True. Waterborne diseases kill approximately 1,000 children under 5 every single day — more than AIDS, malaria, and measles combined. The vast majority of these deaths are preventable with basic water and sanitation infrastructure.",
+    discuss: "These deaths are described as 'preventable.' Who is responsible for preventing them — local governments, wealthy nations, international organizations, or individuals?"
+  },
+  {
+    s: "Using a dishwasher uses more water than washing dishes by hand.",
+    answer: false,
+    explanation: "False. A modern energy-efficient dishwasher uses approximately 6–10 liters per cycle. Washing the same dishes by hand typically uses 40–100 liters. Counterintuitively, the machine is more water-efficient.",
+    discuss: "Many sustainable choices are counterintuitive. What other environmental 'common sense' ideas might actually be wrong? How do we make better decisions with incomplete information?"
+  },
+  {
+    s: "SDG 6 will be fully achieved by 2030 at the current rate of progress.",
+    answer: false,
+    explanation: "False. Current progress is far too slow. At the present rate, 1.6 billion people will still lack safely managed water services by 2030, and 2.8 billion will lack safely managed sanitation. SDG 6 is one of the most off-track goals.",
+    discuss: "What would need to change — politically, economically, technologically — to actually achieve SDG 6 by 2030? Is the deadline still meaningful, or should the focus shift to long-term systemic change?"
+  }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions.slice());
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " statements remaining in this round";
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-toggle-left" aria-hidden="true"></i>True or false</span>' +
+    '<div class="statement">"' + current.s + '"</div>' +
+    '<div class="tf-btns">' +
+      '<button class="tf-btn tf-true" id="btn-true" onclick="checkAnswer(true)">' +
+        '<i class="ti ti-check" aria-hidden="true"></i> True' +
+      '</button>' +
+      '<button class="tf-btn tf-false" id="btn-false" onclick="checkAnswer(false)">' +
+        '<i class="ti ti-x" aria-hidden="true"></i> False' +
+      '</button>' +
+    '</div>' +
+    '<div class="feedback" id="feedback"></div>' +
+    '<div class="discuss" id="discuss"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(chosen) {
+  if (answered || !current) return;
+  answered = true;
+
+  var btnTrue = document.getElementById("btn-true");
+  var btnFalse = document.getElementById("btn-false");
+  btnTrue.disabled = true;
+  btnFalse.disabled = true;
+
+  var isCorrect = (chosen === current.answer);
+  var chosenBtn = chosen ? btnTrue : btnFalse;
+  var correctBtn = current.answer ? btnTrue : btnFalse;
+
+  correctBtn.classList.add("correct-answer");
+  if (!isCorrect) chosenBtn.classList.add("selected-wrong");
+
+  var fb = document.getElementById("feedback");
+  var disc = document.getElementById("discuss");
+
+  if (isCorrect) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+
+  disc.className = "discuss show";
+  disc.innerHTML = '<i class="ti ti-message-circle" aria-hidden="true" style="font-size:13px;vertical-align:-1px;margin-right:6px"></i><strong>Discuss:</strong> ' + current.discuss;
+}
+</script>
+</body>
+</html>
