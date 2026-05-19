@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDG 7 — Clean Energy | Quiz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sdg: #FCC30B; --sdg-dark: #5a3d00; --sdg-light: #fffbe6; --sdg-mid: #f5d96a;
+    --green-50: #E1F5EE; --green-100: #9FE1CB; --green-600: #0F6E56; --green-800: #085041;
+    --red-50: #FCEBEB; --red-100: #F7C1C1; --red-600: #A32D2D;
+    --bg: #ffffff; --bg-2: #f7f7f5;
+    --text: #1a1a18; --text-2: #5f5e5a; --text-3: #888780;
+    --border: rgba(0,0,0,0.10); --border-2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sdg-light: #2a2000; --sdg-mid: #6b4a00; --sdg-dark: #f5d96a;
+      --green-50: #085041; --green-100: #0F6E56; --green-600: #5DCAA5; --green-800: #9FE1CB;
+      --red-50: #501313; --red-100: #791F1F; --red-600: #F09595;
+      --bg: #1c1c1a; --bg-2: #262624;
+      --text: #f0efe8; --text-2: #b4b2a9; --text-3: #888780;
+      --border: rgba(255,255,255,0.10); --border-2: rgba(255,255,255,0.24);
+    }
+  }
+  html, body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+  body { display: flex; justify-content: center; padding: 0; min-height: 100vh; }
+  .wrap { width: 100%; max-width: 640px; padding-bottom: 2rem; }
+  .hero { background: var(--sdg); border-radius: 0 0 var(--radius-lg) var(--radius-lg); padding: 1.5rem 1.5rem 1.25rem; display: flex; align-items: center; gap: 16px; margin-bottom: 1.25rem; }
+  .hero-img { width: 72px; height: 72px; object-fit: contain; border-radius: var(--radius); flex-shrink: 0; background: white; }
+  .hero-eyebrow { font-size: 11px; font-weight: 500; color: rgba(0,0,0,0.5); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-title { font-size: 22px; font-weight: 500; color: #1a1a18; line-height: 1.2; margin-bottom: 4px; }
+  .hero-sub { font-size: 13px; color: rgba(0,0,0,0.55); line-height: 1.5; }
+  .inner { padding: 0 1.25rem; }
+  .scorebar { display: flex; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border-2); border-radius: var(--radius); overflow: hidden; }
+  .sc { flex: 1; padding: 10px 14px; font-size: 13px; color: var(--text-2); background: var(--bg-2); text-align: center; border-right: 0.5px solid var(--border); }
+  .sc:last-child { border-right: none; }
+  .sc span { display: block; font-size: 20px; font-weight: 500; color: var(--text); line-height: 1.2; }
+  .card { background: var(--bg); border: 0.5px solid var(--border-2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 12px; min-height: 220px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--sdg-light); color: #5a3d00; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 1rem; border: 0.5px solid var(--sdg-mid); }
+  .question { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.6; margin-bottom: 1.25rem; }
+  .opts { display: grid; gap: 8px; }
+  .opt { border: 0.5px solid var(--border-2); border-radius: var(--radius); padding: 11px 14px; font-size: 14px; cursor: pointer; background: var(--bg); color: var(--text); text-align: left; transition: background .12s, border-color .12s; width: 100%; font-family: inherit; line-height: 1.5; }
+  .opt:hover:not(:disabled) { background: var(--bg-2); border-color: var(--sdg); }
+  .opt.correct { background: var(--green-50); border-color: var(--green-100); color: var(--green-800); }
+  .opt.wrong { background: var(--red-50); border-color: var(--red-100); color: var(--red-600); }
+  .opt:disabled { cursor: default; }
+  .feedback { margin-top: 1rem; padding: 12px 14px; border-radius: var(--radius); font-size: 14px; line-height: 1.6; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: var(--green-50); color: var(--green-800); border: 0.5px solid var(--green-100); }
+  .feedback.wrong { background: var(--red-50); color: var(--red-600); border: 0.5px solid var(--red-100); }
+  .start-screen { text-align: center; padding: 2rem 1rem; }
+  .start-screen p { font-size: 14px; color: var(--text-2); margin-bottom: 1.5rem; line-height: 1.6; }
+  .actions { display: none; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 0.5px solid var(--border-2); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; cursor: pointer; transition: background .12s; }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary { background: var(--sdg); border-color: var(--sdg); color: #1a1a18; }
+  .btn-primary:hover { background: #e6b000; }
+  .hint { font-size: 12px; color: var(--text-3); }
+  .counter { font-size: 12px; color: var(--text-3); text-align: right; padding: 0 0 4px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <img class="hero-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Sustainable_Development_Goal_07AffordableAndCleanEnergy.svg/1200px-Sustainable_Development_Goal_07AffordableAndCleanEnergy.svg.png" alt="SDG 7" onerror="this.style.display='none'">
+    <div>
+      <div class="hero-eyebrow">Prosperity · Goal 7 of 17</div>
+      <div class="hero-title">Affordable & Clean Energy</div>
+      <div class="hero-sub">25 questions about renewable energy and the global energy transition.</div>
+    </div>
+  </div>
+  <div class="inner">
+    <div class="scorebar">
+      <div class="sc"><span id="correct">0</span>Correct</div>
+      <div class="sc"><span id="wrong">0</span>Wrong</div>
+      <div class="sc"><span id="total">0</span>Questions</div>
+    </div>
+    <div class="card" id="card">
+      <div id="quiz-area">
+        <div class="start-screen">
+          <p>25 questions about clean energy and SDG 7.<br>All four options are similar in length — choose carefully.</p>
+          <button class="btn btn-primary" onclick="nextQuestion()">
+            <i class="ti ti-player-play" aria-hidden="true"></i>
+            Start quiz
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="actions" id="actions">
+      <button class="btn btn-primary" onclick="nextQuestion()">
+        <i class="ti ti-refresh" aria-hidden="true"></i>
+        New question
+      </button>
+      <span class="hint">Questions shuffle every round</span>
+    </div>
+    <div class="counter" id="counter"></div>
+  </div>
+</div>
+
+<script>
+var questions = [
+  {
+    q: "What is the main reason solar panels don't solve the energy problem on their own?",
+    opts: ["A) They only work in countries with very high levels of sunlight", "B) They produce no electricity at night or during cloudy weather", "C) They are still too expensive for most countries to afford", "D) They require rare minerals that are difficult to extract"],
+    correct: 1,
+    explanation: "Solar panels are intermittent — they only generate electricity when the sun is shining. This is why battery storage and grid integration are essential companions to solar energy."
+  },
+  {
+    q: "What made Iceland able to generate nearly 100% renewable electricity?",
+    opts: ["A) A very large investment from the European Union over decades", "B) Exceptional volcanic and glacial geography that provides geothermal and hydro resources", "C) A government decision to ban all fossil fuels in the early 1990s", "D) A small population that requires very little electricity to meet its needs"],
+    correct: 1,
+    explanation: "Iceland sits on the Mid-Atlantic Ridge, producing abundant geothermal heat. Combined with glacial rivers for hydropower, its natural geography makes near-100% renewable electricity possible."
+  },
+  {
+    q: "The cost of solar energy fell over 90% between 2010 and 2023. What was the main driver?",
+    opts: ["A) A single technological breakthrough that made panels far more efficient", "B) Government subsidies that paid for most of the research and manufacturing costs", "C) A combination of manufacturing scale, technology improvements, and global competition", "D) Discovery of a new, much cheaper material to replace silicon in solar cells"],
+    correct: 2,
+    explanation: "Solar's cost reduction came from a virtuous cycle: early government policies created demand, manufacturing scale reduced costs, and global — especially Chinese — competition accelerated the process."
+  },
+  {
+    q: "Germany uses coal as backup even after large renewable investments. What is the core reason?",
+    opts: ["A) Solar and wind are still too expensive compared to coal in Germany", "B) German energy policy requires a minimum share of coal in the electricity mix", "C) Solar and wind are intermittent — they don't always produce when demand is high", "D) Germany doesn't have enough land area to install sufficient renewable capacity"],
+    correct: 2,
+    explanation: "Intermittency is the central challenge of renewable energy. When the sun doesn't shine and the wind doesn't blow, backup sources are needed. Managing this requires storage, grid flexibility, and interconnections."
+  },
+  {
+    q: "Brazil's main electricity vulnerability is its heavy dependence on hydropower. Why?",
+    opts: ["A) Hydroelectric dams are extremely expensive and difficult to maintain", "B) Rivers in Brazil are too fast-flowing for stable electricity generation", "C) Prolonged droughts lower reservoir levels and sharply reduce electricity output", "D) Hydroelectric plants cannot connect easily to the national transmission grid"],
+    correct: 2,
+    explanation: "Brazil faced serious electricity crises during the 2001 and 2021 droughts when reservoir levels fell critically. This is why Brazil has been diversifying into wind and solar energy."
+  },
+  {
+    q: "What does 'energy poverty' mean?",
+    opts: ["A) Countries that produce energy but cannot export it profitably", "B) Governments that cannot afford to subsidize electricity for their citizens", "C) Communities that lack access to affordable, reliable, and modern energy services", "D) Households that spend more than 10% of their income on electricity bills"],
+    correct: 2,
+    explanation: "Energy poverty means lacking access to modern energy services. Without electricity, children can't study at night, hospitals can't refrigerate medicines, and businesses can't operate after dark."
+  },
+  {
+    q: "Why is nuclear energy described as 'clean but not renewable'?",
+    opts: ["A) Nuclear plants release harmful radiation into the atmosphere during operation", "B) Uranium — nuclear fuel — is a finite resource extracted from the ground", "C) Nuclear energy is too costly to be considered a competitive clean option", "D) International treaties classify nuclear fuel as a form of fossil fuel"],
+    correct: 1,
+    explanation: "Nuclear energy produces very low carbon emissions, comparable to wind energy. However, uranium is finite — unlike sun, wind, or water, it cannot regenerate naturally, so nuclear is clean but not renewable."
+  },
+  {
+    q: "What is green hydrogen?",
+    opts: ["A) Hydrogen extracted from natural gas with carbon capture applied afterwards", "B) Hydrogen produced by splitting water using electricity from renewable sources", "C) A type of hydrogen that produces no heat when burned in combustion engines", "D) Hydrogen extracted from underground deposits without any combustion process"],
+    correct: 1,
+    explanation: "Green hydrogen uses renewable electricity to split water into hydrogen and oxygen. When used as fuel, it produces only water vapor. It is one of the most promising tools for decarbonizing heavy industry."
+  },
+  {
+    q: "Which country generates the highest share of its electricity from hydropower?",
+    opts: ["A) Brazil, due to the size of the Amazon river system", "B) Canada, which has large rivers and extensive dam infrastructure", "C) Norway, which gets around 95% of its electricity from hydropower", "D) China, which has built more dams than any other country in history"],
+    correct: 2,
+    explanation: "Norway generates 95–99% of its electricity from hydropower. Its mountainous terrain and abundant rainfall create ideal conditions that very few countries can match."
+  },
+  {
+    q: "What does energy efficiency mean in the context of SDG 7?",
+    opts: ["A) Generating the maximum possible electricity from any available source", "B) Using only certified renewable sources for national electricity production", "C) Reducing the energy needed to deliver the same product or service", "D) Ensuring that energy prices are affordable for low-income households"],
+    correct: 2,
+    explanation: "Energy efficiency is sometimes called 'the first fuel.' Reducing waste is often cheaper than generating new energy. LEDs, for example, provide the same light as older bulbs while using 50–80% less electricity."
+  },
+  {
+    q: "Most of the 700 million people without electricity access live where?",
+    opts: ["A) Rural areas of South and Southeast Asia", "B) Urban slums across Latin America and the Caribbean", "C) Sub-Saharan Africa, mostly in rural communities", "D) Remote Pacific and Indian Ocean island nations"],
+    correct: 2,
+    explanation: "Sub-Saharan Africa has the highest energy poverty in the world. In countries like South Sudan and Chad, over 80% of the population lacks electricity. Decentralized solar is currently the most practical solution."
+  },
+  {
+    q: "Why does spreading wind farms across many locations reduce intermittency?",
+    opts: ["A) Taller turbines at one site can access stronger, more consistent high-altitude winds", "B) When farms are geographically spread, wind is almost always blowing somewhere in the network", "C) Underground compressed air storage near each farm eliminates production gaps", "D) Combining wind turbines with solar panels on shared structures solves both problems"],
+    correct: 1,
+    explanation: "Geographic diversification is one of the most effective strategies for managing wind intermittency. It's very rare for wind to stop blowing simultaneously across a large, well-interconnected region."
+  },
+  {
+    q: "A small island completely dependent on imported diesel switches to solar and batteries. What is the main benefit?",
+    opts: ["A) The island can now export surplus electricity to neighboring islands", "B) Imported diesel becomes cheaper due to reduced local demand", "C) Electricity costs fall sharply and energy independence is achieved", "D) The island qualifies for UN clean energy grants and international funding"],
+    correct: 2,
+    explanation: "Island nations pay extremely high electricity prices for imported diesel. Switching to solar-plus-battery eliminates this dependence and can reduce electricity costs by 50–80%, as shown by examples like El Hierro in Spain."
+  },
+  {
+    q: "What is a smart grid?",
+    opts: ["A) A grid that automatically switches between fossil fuels based on market price", "B) A local mini-grid that operates independently from the national electricity system", "C) A digital electricity network that balances supply and demand in real time", "D) A grid with extra physical protection against storms and cyberattacks"],
+    correct: 2,
+    explanation: "Smart grids use sensors, data, and automation to manage the variability of solar and wind, integrate electric vehicles, and involve consumers in demand management. They are essential infrastructure for high-renewable energy systems."
+  },
+  {
+    q: "Why do fossil fuel companies often promote natural gas as a 'transition fuel'?",
+    opts: ["A) Natural gas produces zero carbon emissions and is genuinely a clean energy bridge", "B) Gas infrastructure is easily converted to carry hydrogen when needed in the future", "C) It extends the profitable life of their existing assets while slowing the shift to renewables", "D) Natural gas is officially classified as a renewable fuel under international energy agreements"],
+    correct: 2,
+    explanation: "While natural gas emits less CO₂ than coal, it is still a fossil fuel. The 'bridge fuel' narrative has been criticized as a strategy to delay renewable energy adoption while extending fossil fuel revenue."
+  },
+  {
+    q: "Global CO₂ emissions kept rising between 2000–2020 even as renewables grew. Why?",
+    opts: ["A) Renewable energy statistics were significantly exaggerated by governments", "B) Total energy demand grew faster than renewable capacity was added", "C) Renewables only replaced other clean sources like hydropower, not fossil fuels", "D) CO₂ from manufacturing renewable equipment cancelled out the clean electricity gains"],
+    correct: 1,
+    explanation: "If renewables grow at 5% but total energy demand grows at 6%, fossil fuels still increase in absolute terms. Decoupling economic growth from energy demand growth is an essential part of the energy transition."
+  },
+  {
+    q: "What is the main advantage of nuclear energy over solar and wind?",
+    opts: ["A) Nuclear energy is cheaper than solar and wind at current market prices", "B) Nuclear produces reliable, low-carbon electricity continuously, regardless of weather", "C) Nuclear waste can be safely reprocessed and reused as fuel for newer reactors", "D) Nuclear energy qualifies as renewable under most international climate frameworks"],
+    correct: 1,
+    explanation: "Nuclear energy's key advantage is dispatchability — it produces consistent electricity 24/7 regardless of sun or wind. Its carbon footprint per kilowatt-hour is comparable to wind energy."
+  },
+  {
+    q: "What is the main problem with large fossil fuel subsidies?",
+    opts: ["A) They always cause inflation and damage national economic stability", "B) They make fossil fuels artificially cheap and delay investment in clean alternatives", "C) International law prohibits government subsidies for any type of energy source", "D) They only benefit large corporations and never reach individual energy consumers"],
+    correct: 1,
+    explanation: "Fossil fuel subsidies distort energy markets, making renewables appear less competitive than they really are. Globally they total over $7 trillion per year when indirect costs are included."
+  },
+  {
+    q: "An offshore wind farm operates 45% of the time. A coal plant operates 85% of the time. Does this make wind unreliable?",
+    opts: ["A) Yes — reliability is the fundamental weakness of all offshore wind energy", "B) No — a diverse grid with storage achieves reliability without any single source running constantly", "C) Yes — wind capacity factors must reach 85% before wind can replace any coal plants", "D) No — offshore wind capacity factors will match coal within the next ten years"],
+    correct: 1,
+    explanation: "Grids don't need every source to run all the time. A combination of diverse renewable sources, battery storage, and interconnections achieves reliability. Offshore wind's 45% capacity factor is actually high for a renewable source."
+  },
+  {
+    q: "What is energy justice?",
+    opts: ["A) Equal electricity prices for all countries regardless of income level", "B) Fair distribution of energy benefits, costs, pollution, and transition impacts across communities", "C) A legal framework requiring energy companies to compensate for past climate damages", "D) The principle that developing countries should not cut emissions until they industrialize"],
+    correct: 1,
+    explanation: "Energy justice recognizes that energy decisions have unequal impacts. Fossil fuel pollution disproportionately affects poor communities. SDG 7 — 'affordable and clean' — is fundamentally an energy justice goal."
+  },
+  {
+    q: "A country builds a large solar farm in a desert far from its cities. What is the main challenge?",
+    opts: ["A) Solar panels are significantly less efficient in hot desert conditions", "B) Building long-distance transmission lines from the desert to cities is expensive and slow", "C) Environmental laws typically prevent solar construction in desert ecosystems", "D) Desert solar farms cannot produce enough electricity to power large urban areas"],
+    correct: 1,
+    explanation: "Transmission infrastructure is one of the biggest bottlenecks in the energy transition. Renewable resources are often located far from population centers, and building transmission grids can take longer than building the generation itself."
+  },
+  {
+    q: "A company buys renewable energy certificates and claims 100% clean power. Why is this criticized?",
+    opts: ["A) Renewable certificates are not legally recognized in most countries", "B) Certificates are traded separately from electricity — the company still uses whatever is on the grid", "C) Companies must receive government approval before making any clean energy claims", "D) Manufacturing renewable equipment creates more CO₂ than the clean power offsets"],
+    correct: 1,
+    explanation: "Renewable Energy Certificates can be traded completely separately from actual electricity. A company in a coal-heavy region can buy certificates from a wind farm elsewhere but still physically consume coal-generated electricity."
+  },
+  {
+    q: "What is grey hydrogen and why is it a problem?",
+    opts: ["A) Hydrogen stored underground for more than a year that loses energy density", "B) Hydrogen produced from natural gas, releasing significant CO₂ in the process", "C) Hydrogen generated from seawater that requires no energy input to produce", "D) Hydrogen produced from coal that is the most efficient production method available"],
+    correct: 1,
+    explanation: "Grey hydrogen is the most common type today. It uses natural gas as a feedstock and releases CO₂ during production, making it far from clean. Only green hydrogen — made with renewable electricity — is truly carbon-free."
+  },
+  {
+    q: "At current rates, what will happen with SDG 7's universal electricity access target by 2030?",
+    opts: ["A) The target will be achieved ahead of schedule due to falling solar costs", "B) Hundreds of millions of people will still lack electricity access, mostly in Africa", "C) All SDG 7 targets will be missed, including the renewable energy expansion goals", "D) Access will be achieved globally, but only through continued reliance on fossil fuels"],
+    correct: 1,
+    explanation: "The IEA projects around 660 million people will still lack electricity in 2030 at current rates. Renewable capacity is growing faster than expected globally, but universal access in rural Sub-Saharan Africa is falling behind."
+  },
+  {
+    q: "What is direct air capture and what limits its usefulness today?",
+    opts: ["A) Machines capturing emissions at factory chimneys — limited by industrial opposition", "B) Technology removing CO₂ from the atmosphere — currently too expensive and slow to offset emissions at scale", "C) Using forests to absorb atmospheric carbon — limited by land availability and deforestation", "D) Solar panels converting CO₂ into electricity — limited by low conversion efficiency rates"],
+    correct: 1,
+    explanation: "Direct air capture technology exists and is growing, but it is extraordinarily expensive and energy-intensive at current scale. It could complement deep emissions cuts in the future, but cannot substitute for reducing fossil fuel use now."
+  }
+];
+
+var queue = [];
+var current = null;
+var answered = false;
+var score = { correct: 0, wrong: 0, total: 0 };
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function nextQuestion() {
+  if (queue.length === 0) queue = shuffle(questions.slice());
+  current = queue.pop();
+  answered = false;
+  score.total++;
+  document.getElementById("total").textContent = score.total;
+  document.getElementById("counter").textContent = queue.length + " questions remaining in this round";
+
+  var optsHtml = current.opts.map(function(o, i) {
+    return '<button class="opt" onclick="checkAnswer(' + i + ')">' + o + '</button>';
+  }).join("");
+
+  document.getElementById("quiz-area").innerHTML =
+    '<span class="tag"><i class="ti ti-help-circle" aria-hidden="true"></i>Multiple choice</span>' +
+    '<div class="question">' + current.q + '</div>' +
+    '<div class="opts" id="opts">' + optsHtml + '</div>' +
+    '<div class="feedback" id="feedback"></div>';
+
+  document.getElementById("actions").style.display = "flex";
+}
+
+function checkAnswer(i) {
+  if (answered || !current) return;
+  answered = true;
+  var btns = document.querySelectorAll(".opt");
+  btns.forEach(function(b, idx) {
+    b.disabled = true;
+    if (idx === current.correct) b.classList.add("correct");
+    else if (idx === i && i !== current.correct) b.classList.add("wrong");
+  });
+  var fb = document.getElementById("feedback");
+  if (i === current.correct) {
+    score.correct++;
+    document.getElementById("correct").textContent = score.correct;
+    fb.className = "feedback correct show";
+    fb.innerHTML = '<i class="ti ti-check" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Correct!</strong> ' + current.explanation;
+  } else {
+    score.wrong++;
+    document.getElementById("wrong").textContent = score.wrong;
+    fb.className = "feedback wrong show";
+    fb.innerHTML = '<i class="ti ti-x" style="font-size:14px;vertical-align:-2px;margin-right:6px"></i><strong>Not quite.</strong> ' + current.explanation;
+  }
+}
+</script>
+</body>
+</html>
