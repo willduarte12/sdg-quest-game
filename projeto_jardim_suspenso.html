@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto: Jardim Suspenso</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra: #3d2b1f;
+    --folha: #2d6a4f;
+    --folha2: #52b788;
+    --folha-claro: #b7e4c7;
+    --creme: #fdf6ec;
+    --creme2: #f0e6d3;
+    --marrom: #8b5e3c;
+    --marrom-claro: #c9956c;
+    --cinza: #6b7c6e;
+    --branco: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--creme);
+    color: var(--terra);
+    font-family: 'Karla', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* FUNDO ORGÂNICO */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 10% 20%, rgba(45,106,79,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 90% 80%, rgba(82,183,136,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 60px 32px 52px;
+    max-width: 880px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: start;
+  }
+  @media(max-width:600px){ .hero { grid-template-columns: 1fr; } }
+
+  .hero-left {}
+
+  .tag-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--folha-claro);
+    color: var(--folha);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--terra);
+    margin-bottom: 8px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--folha);
+  }
+  .hero-sub-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--marrom-claro);
+    margin-bottom: 20px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--cinza);
+    line-height: 1.8;
+    max-width: 480px;
+  }
+
+  /* ILUSTRAÇÃO JARDIM */
+  .jardim-ilustracao {
+    width: 160px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    animation: balanco 4s ease-in-out infinite;
+  }
+  @keyframes balanco {
+    0%,100%{ transform: rotate(-1.5deg); }
+    50%{ transform: rotate(1.5deg); }
+  }
+  .corda { width: 2px; height: 40px; background: var(--marrom); margin: 0 auto; }
+  .vaso {
+    width: 100px;
+    background: var(--marrom);
+    border-radius: 8px 8px 20px 20px;
+    padding: 14px 12px 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .vaso::before {
+    content: 'PET reciclada';
+    position: absolute;
+    bottom: 6px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .planta {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 2px;
+  }
+  .folha-svg { font-size: 22px; }
+  .folha-svg:nth-child(2) { font-size: 28px; margin-bottom: 4px; }
+  .terra-vaso {
+    width: 76px;
+    height: 10px;
+    background: var(--terra);
+    border-radius: 50px;
+  }
+  .rotulo {
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* DIVISOR ORGÂNICO */
+  .divisor {
+    max-width: 880px;
+    margin: 0 auto 40px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--marrom-claro);
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .divisor::before, .divisor::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--creme2);
+  }
+
+  /* GRID */
+  .grid {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    position: relative;
+    z-index: 1;
+  }
+  @media(max-width:600px){ .grid { grid-template-columns: 1fr; } }
+
+  /* CARDS */
+  .card {
+    background: var(--branco);
+    border: 1.5px solid var(--creme2);
+    border-radius: 20px;
+    padding: 28px 26px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    animation: sobir 0.5s ease both;
+  }
+  .card:hover { border-color: var(--folha2); box-shadow: 0 8px 32px rgba(45,106,79,0.1); }
+  .card.full { grid-column: 1 / -1; }
+  .card.verde {
+    background: var(--folha);
+    border-color: var(--folha);
+    color: #fff;
+  }
+  .card.terra {
+    background: var(--terra);
+    border-color: var(--terra);
+    color: #fff;
+  }
+
+  @keyframes sobir { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .card:nth-child(1){animation-delay:.05s}
+  .card:nth-child(2){animation-delay:.1s}
+  .card:nth-child(3){animation-delay:.15s}
+  .card:nth-child(4){animation-delay:.2s}
+  .card:nth-child(5){animation-delay:.25s}
+  .card:nth-child(6){animation-delay:.3s}
+  .card:nth-child(7){animation-delay:.35s}
+  .card:nth-child(8){animation-delay:.4s}
+
+  .card-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--folha2);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-tag::after { content:''; flex:1; height:1px; background:var(--creme2); }
+  .card.verde .card-tag { color: var(--folha-claro); }
+  .card.verde .card-tag::after { background: rgba(255,255,255,0.15); }
+  .card.terra .card-tag { color: var(--marrom-claro); }
+  .card.terra .card-tag::after { background: rgba(255,255,255,0.1); }
+
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--terra);
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .card.verde h2, .card.terra h2 { color: #fff; }
+
+  .card p {
+    font-size: 14px;
+    color: var(--cinza);
+    line-height: 1.8;
+  }
+  .card.verde p, .card.terra p { color: rgba(255,255,255,0.8); }
+
+  /* LISTA */
+  .lista {
+    list-style: none;
+    margin-top: 14px;
+  }
+  .lista li {
+    font-size: 13.5px;
+    color: var(--cinza);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--creme2);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+  .card.verde .lista li { color: rgba(255,255,255,0.85); border-bottom-color: rgba(255,255,255,0.12); }
+  .lista li:last-child { border-bottom: none; }
+  .li-icone {
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: var(--folha-claro);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+  .card.verde .li-icone { background: rgba(255,255,255,0.15); }
+
+  /* MATERIAIS */
+  .materiais-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .material-item {
+    background: var(--creme);
+    border: 1.5px solid var(--creme2);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .material-item:hover { border-color: var(--folha2); }
+  .material-emoji { font-size: 28px; display: block; margin-bottom: 8px; }
+  .material-nome {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--terra);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .material-uso {
+    font-size: 11px;
+    color: var(--cinza);
+    line-height: 1.4;
+  }
+  .material-badge {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 50px;
+    background: var(--folha-claro);
+    color: var(--folha);
+  }
+  .material-badge.organico { background: #ffe8cc; color: #b05a00; }
+
+  /* ROTEIRO */
+  .roteiro { margin-top: 14px; display: flex; flex-direction: column; gap: 0; }
+  .roteiro-item {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 22px;
+    position: relative;
+  }
+  .roteiro-item::before {
+    content:'';
+    position: absolute;
+    left: 14px; top: 30px; bottom: 0;
+    width: 1px;
+    background: var(--creme2);
+  }
+  .roteiro-item:last-child::before { display: none; }
+  .roteiro-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--folha-claro);
+    border: 1.5px solid var(--folha2);
+    color: var(--folha);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    position: relative; z-index: 1;
+  }
+  .roteiro-texto strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--terra);
+    margin-bottom: 3px;
+  }
+  .roteiro-texto span {
+    font-size: 13px;
+    color: var(--cinza);
+    line-height: 1.6;
+  }
+  .roteiro-tempo {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--marrom-claro);
+    white-space: nowrap;
+    padding-top: 5px;
+  }
+
+  /* CARTAZES */
+  .cartazes-lista { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .cartaz-item {
+    background: var(--creme);
+    border-left: 4px solid var(--folha2);
+    border-radius: 0 12px 12px 0;
+    padding: 13px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .cartaz-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--folha2);
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .cartaz-nome {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--terra);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .cartaz-desc {
+    font-size: 12.5px;
+    color: var(--cinza);
+    line-height: 1.5;
+  }
+
+  /* FRASE */
+  .frase-bloco {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    text-align: center;
+    line-height: 1.4;
+    padding: 36px 24px;
+    position: relative;
+  }
+  .frase-bloco::before {
+    content: '\201C';
+    font-size: 120px;
+    position: absolute;
+    top: -10px; left: 10px;
+    opacity: 0.12;
+    line-height: 1;
+    font-style: normal;
+  }
+  .frase-bloco span { color: var(--folha-claro); }
+
+  /* COMPOSTAGM */
+  .ciclo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .ciclo-item {
+    background: rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .ciclo-emoji { font-size: 26px; display: block; margin-bottom: 6px; }
+  .ciclo-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.9); }
+  .ciclo-seta {
+    font-size: 18px;
+    color: rgba(255,255,255,0.3);
+    padding: 0 4px;
+    align-self: center;
+  }
+
+  /* PERGUNTAS */
+  .perguntas { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .pergunta {
+    background: #fffbe8;
+    border: 1.5px solid #f5e6a3;
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-size: 13.5px;
+    color: var(--terra);
+    display: flex;
+    gap: 10px;
+    line-height: 1.6;
+  }
+  .pergunta-n { font-weight: 700; color: #b08800; flex-shrink: 0; }
+
+  /* FOOTER */
+  .footer {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-top: 1px solid var(--creme2);
+    z-index: 1;
+    position: relative;
+  }
+  .footer-info { font-size: 12px; color: var(--cinza); }
+  .footer-badge {
+    background: var(--folha-claro);
+    color: var(--folha);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 50px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="tag-top">🌿 Missão Reciclagem 2026 — Projeto Finalizado</div>
+    <h1>Jardim<br><em>Suspenso</em></h1>
+    <div class="hero-sub-titulo">Da cantina para o corredor: o lixo da escola vira vida</div>
+    <p>A escola já separa o lixo. Agora o desafio é maior: transformar o que é descartado em algo vivo, bonito e útil. O jardim suspenso usa embalagens descartadas como vasos e o lixo orgânico da cantina como adubo, fechando o ciclo dentro da própria escola.</p>
+  </div>
+  <div class="jardim-ilustracao">
+    <div class="corda"></div>
+    <div class="corda"></div>
+    <div class="vaso">
+      <div class="planta">
+        <span class="folha-svg">🌿</span>
+        <span class="folha-svg">🌱</span>
+        <span class="folha-svg">🍃</span>
+      </div>
+      <div class="terra-vaso"></div>
+      <div class="rotulo">reciclado</div>
+    </div>
+  </div>
+</div>
+
+<div class="divisor">Estrutura completa do projeto</div>
+
+<div class="grid">
+
+  <!-- PROBLEMA -->
+  <div class="card full verde">
+    <div class="card-tag">01 — O Problema</div>
+    <h2>A escola separa o lixo. Mas o lixo orgânico da cantina vai tudo para o aterro.</h2>
+    <p>As lixeiras coloridas resolvem parte do problema. Mas existe um resíduo que ninguém discute: o lixo orgânico, cascas, restos de comida, borra de café, que representa cerca de 45% de todo o lixo brasileiro (ABRELPE, 2024) e vai direto para o aterro, onde apodrece e gera metano, um gás 25 vezes mais poluente que o CO₂. Nossa proposta une dois problemas em uma solução só: embalagens descartadas viram vasos e o orgânico da cantina vira adubo.</p>
+  </div>
+
+  <!-- SOLUÇÃO -->
+  <div class="card">
+    <div class="card-tag">02 — A Solução</div>
+    <h2>O jardim que a escola fabrica com o próprio lixo</h2>
+    <p>Criar um jardim suspenso no corredor ou pátio da escola usando exclusivamente materiais descartados. Cada vaso é uma embalagem reciclada. Cada punhado de terra é adubo feito com o orgânico da cantina. A proposta tem duas frentes que se complementam:</p>
+    <ul class="lista">
+      <li><div class="li-icone">🪴</div> Jardim suspenso com embalagens PET, latas e caixas Tetra Pak transformadas em vasos decorados pelos alunos</li>
+      <li><div class="li-icone">🍂</div> Miniponto de compostagem na escola para transformar o orgânico da cantina em adubo para o próprio jardim</li>
+      <li><div class="li-icone">♻️</div> Ciclo fechado: o lixo da escola alimenta o jardim, o jardim alimenta a escola de consciência ambiental</li>
+    </ul>
+  </div>
+
+  <!-- MATERIAIS -->
+  <div class="card">
+    <div class="card-tag">03 — Materiais Usados</div>
+    <h2>O que vira vaso e o que vira adubo</h2>
+    <div class="materiais-grid">
+      <div class="material-item">
+        <span class="material-emoji">🧴</span>
+        <span class="material-nome">Garrafa PET</span>
+        <span class="material-uso">Vaso principal, cortado e decorado</span>
+        <span class="material-badge">Reciclável</span>
+      </div>
+      <div class="material-item">
+        <span class="material-emoji">🥫</span>
+        <span class="material-nome">Lata de alumínio</span>
+        <span class="material-uso">Vaso pequeno para ervas</span>
+        <span class="material-badge">Reciclável</span>
+      </div>
+      <div class="material-item">
+        <span class="material-emoji">🧃</span>
+        <span class="material-nome">Caixa Tetra Pak</span>
+        <span class="material-uso">Vaso retangular, fácil de pendurar</span>
+        <span class="material-badge">Reciclável</span>
+      </div>
+      <div class="material-item">
+        <span class="material-emoji">🍌</span>
+        <span class="material-nome">Cascas e restos</span>
+        <span class="material-uso">Compostagem, vira adubo em 30 dias</span>
+        <span class="material-badge organico">Orgânico</span>
+      </div>
+      <div class="material-item">
+        <span class="material-emoji">☕</span>
+        <span class="material-nome">Borra de café</span>
+        <span class="material-uso">Fertilizante natural direto no vaso</span>
+        <span class="material-badge organico">Orgânico</span>
+      </div>
+      <div class="material-item">
+        <span class="material-emoji">📰</span>
+        <span class="material-nome">Jornal e papel</span>
+        <span class="material-uso">Camada de drenagem no fundo do vaso</span>
+        <span class="material-badge">Reciclável</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CICLO DA COMPOSTAGEM -->
+  <div class="card terra full">
+    <div class="card-tag">04 — O Ciclo Fechado</div>
+    <h2>Como o orgânico da cantina vira adubo</h2>
+    <p>A proposta inclui um miniponto de compostagem, que pode ser feito com um balde de 20L e custa praticamente zero. O ciclo funciona assim:</p>
+    <div class="ciclo">
+      <div class="ciclo-item">
+        <span class="ciclo-emoji">🍽️</span>
+        <div class="ciclo-label">Sobras da cantina</div>
+      </div>
+      <div class="ciclo-seta">→</div>
+      <div class="ciclo-item">
+        <span class="ciclo-emoji">🪣</span>
+        <div class="ciclo-label">Balde de compostagem</div>
+      </div>
+      <div class="ciclo-seta">→</div>
+      <div class="ciclo-item">
+        <span class="ciclo-emoji">🌱</span>
+        <div class="ciclo-label">Adubo em 30 dias</div>
+      </div>
+      <div class="ciclo-seta">→</div>
+      <div class="ciclo-item">
+        <span class="ciclo-emoji">🪴</span>
+        <div class="ciclo-label">Alimenta o jardim</div>
+      </div>
+      <div class="ciclo-seta">→</div>
+      <div class="ciclo-item">
+        <span class="ciclo-emoji">♻️</span>
+        <div class="ciclo-label">Ciclo reinicia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROTEIRO -->
+  <div class="card">
+    <div class="card-tag">05 — Roteiro da Apresentação</div>
+    <h2>Como apresentar no grande dia</h2>
+    <div class="roteiro">
+      <div class="roteiro-item">
+        <div class="roteiro-num">1</div>
+        <div class="roteiro-texto">
+          <strong>Abertura: a pergunta que ninguém faz</strong>
+          <span>Começar com: "A escola já tem lixeiras coloridas. Mas o que acontece com as cascas de banana da cantina?" Revelar que vai para o aterro e gera gás poluente.</span>
+        </div>
+        <div class="roteiro-tempo">2 min</div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">2</div>
+        <div class="roteiro-texto">
+          <strong>O dado que choca</strong>
+          <span>45% do lixo brasileiro é orgânico e vai para aterro. Mostrar o cartaz de dados e explicar o que é o gás metano e seu impacto no clima.</span>
+        </div>
+        <div class="roteiro-tempo">3 min</div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">3</div>
+        <div class="roteiro-texto">
+          <strong>Apresentar a maquete do jardim</strong>
+          <span>Mostrar a maquete, explicar cada material usado, de onde ele viria na escola e como seria pendurado ou instalado.</span>
+        </div>
+        <div class="roteiro-tempo">4 min</div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">4</div>
+        <div class="roteiro-texto">
+          <strong>Explicar o ciclo da compostagem</strong>
+          <span>Usar o cartaz do ciclo para mostrar como o orgânico da cantina vira adubo e alimenta o próprio jardim. Destacar o custo zero.</span>
+        </div>
+        <div class="roteiro-tempo">3 min</div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-num">5</div>
+        <div class="roteiro-texto">
+          <strong>A proposta para a direção</strong>
+          <span>Encerrar com o pedido concreto: autorização para instalar o jardim e o balde de compostagem. Mostrar que a turma já está pronta para executar.</span>
+        </div>
+        <div class="roteiro-tempo">3 min</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARTAZES -->
+  <div class="card">
+    <div class="card-tag">06 — Plano dos Cartazes</div>
+    <h2>O que cada cartaz vai mostrar</h2>
+    <div class="cartazes-lista">
+      <div class="cartaz-item">
+        <div class="cartaz-num">1</div>
+        <div>
+          <span class="cartaz-nome">O lixo que ninguém vê</span>
+          <span class="cartaz-desc">Dados sobre o lixo orgânico no Brasil: 45% do total, destino, impacto do metano no clima</span>
+        </div>
+      </div>
+      <div class="cartaz-item">
+        <div class="cartaz-num">2</div>
+        <div>
+          <span class="cartaz-nome">Da embalagem ao vaso</span>
+          <span class="cartaz-desc">Passo a passo visual de como uma garrafa PET vira um vaso funcional e decorado</span>
+        </div>
+      </div>
+      <div class="cartaz-item">
+        <div class="cartaz-num">3</div>
+        <div>
+          <span class="cartaz-nome">O ciclo fechado</span>
+          <span class="cartaz-desc">Infográfico do ciclo: cantina, compostagem, adubo, jardim. Visual e fácil de entender</span>
+        </div>
+      </div>
+      <div class="cartaz-item">
+        <div class="cartaz-num">4</div>
+        <div>
+          <span class="cartaz-nome">Quanto custa? Quase nada.</span>
+          <span class="cartaz-desc">Lista de materiais necessários com custo real estimado, mostrando que a proposta é viável</span>
+        </div>
+      </div>
+      <div class="cartaz-item">
+        <div class="cartaz-num">5</div>
+        <div>
+          <span class="cartaz-nome">Como vai ficar</span>
+          <span class="cartaz-nome" style="font-weight:400;color:var(--cinza)">Desenho ou colagem mostrando como o jardim ficaria instalado no corredor ou pátio da escola</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRASE -->
+  <div class="card full terra">
+    <div class="card-tag">07 — Frase de Impacto</div>
+    <div class="frase-bloco">
+      "O lixo da nossa escola não precisa ir para longe.<br>
+      Ele pode <span>virar vida bem aqui.</span>"
+    </div>
+  </div>
+
+  <!-- PERGUNTAS CATADOR -->
+  <div class="card full">
+    <div class="card-tag">08 — Perguntas para o Catador Convidado</div>
+    <h2>O que vamos perguntar no dia</h2>
+    <div class="perguntas">
+      <div class="pergunta">
+        <div class="pergunta-n">P1</div>
+        O lixo orgânico atrapalha o seu trabalho? O que acontece quando ele vem misturado com o material reciclável?
+      </div>
+      <div class="pergunta">
+        <div class="pergunta-n">P2</div>
+        Uma escola que começa a compostar o orgânico ajuda diretamente o trabalho das cooperativas? De que forma?
+      </div>
+      <div class="pergunta">
+        <div class="pergunta-n">P3</div>
+        Se nossa escola montar o jardim e o ponto de compostagem, você ou a cooperativa toparia vir aqui mostrar para os outros alunos como funciona?
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-info">Missão Reciclagem 2026 · Solar Coca-Cola + Instituto Limpa Brasil · Programa Meu Futuro Minha Voz</div>
+  <div class="footer-badge">🌿 Projeto: Jardim Suspenso</div>
+</div>
+
+</body>
+</html>
